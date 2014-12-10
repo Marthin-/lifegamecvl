@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "obj.h"
+#define esc 27
+
+void clrscreen ()         {printf ("%c[2J%c[H" , esc , esc) ;}
 
 obj getEau(){
 	obj * pt=malloc(sizeof(obj));
@@ -281,6 +284,7 @@ void remplir(obj *tab, int n){
 
 void afficher(obj *tab, int n){
 	int k;
+	clrscreen();
 	for (k=0;k<n*n;k++){
 		printf("%i ", (tab+k)->type);
 		if (k%n==n-1)

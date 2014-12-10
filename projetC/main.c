@@ -9,7 +9,7 @@ int main(int argc, char **argv){
 	obj * tab=malloc(n*n*sizeof(obj));
 	remplir(tab, n);
 	int tour;
-	for (tour=0;tour<2;tour++){
+	for (tour=0;tour<100;tour++){
 		afficher(tab, n);
 		survie(tab, n, tour);
 		afficher(tab, n);
