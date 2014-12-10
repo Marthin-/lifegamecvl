@@ -4,13 +4,13 @@
 #include "obj.h"
 
 int main(int argc, char **argv){
-	int n=15;
+	int n=5;
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
 	remplir(tab, n);
 	int tour;
 	for (tour=0;tour<50;tour++){
-		printf("Tour %i :\n", tour);
+		printf("---------------Tour %i---------------\n", tour);
 		afficher(tab, n);
 		printf("vvvvv Survie vvvvv\n");
 		survie(tab, n, tour);
@@ -20,7 +20,9 @@ int main(int argc, char **argv){
 		afficher(tab, n);
 		printf("vvvvv Predation vvvvv\n");
 		predation(tab, n, tour);
-//		deplacement(tab, n);
+		afficher(tab, n);
+		printf("vvvvv Deplacement vvvvv\n");
+		deplacement(tab, n, tour);
 		augTour(tab, n);
 	}
 	afficher(tab, n);

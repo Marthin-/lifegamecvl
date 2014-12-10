@@ -501,12 +501,12 @@ void predation(obj *tab, int n, int tour){
 	}
 }
 
-void deplacement(obj *tab, int n){
+void deplacement(obj *tab, int n, int tour){
 	int k;
 	for (k=0;k<n*n;k++){
 		int sm=0;
 		int nextpos=0;
-		while (sm<(tab+k)->saut_max && (tab+k)->satiete>0 && isPresent(tab, k+nextpos, n, 0)!=-1){
+		while (sm<(tab+k)->saut_max && (tab+k)->satiete>0 && (tab+k)->dernier_deplacement!=tour && isPresent(tab, k+nextpos, n, 0)!=-1){
 			if (nextpos==0){
 				int pos=0;
 				while(pos==0){
@@ -529,21 +529,35 @@ void deplacement(obj *tab, int n){
 						pos=n+1;
 				}
 				nextpos=pos;
-				(tab+k)->satiete--;
 			}
 			else {
 				//bouger dans la meme direction si possible
-				if (nextpos==-(n+1)*sm && k+nextpos>=n && (k+nextpos)%n!=0 && (tab+k+nextpos-n-1)->type==0)
+				if (nextpos==-(n+1)*sm && k+nextpos>n && (k+nextpos)%n!=0 && (tab+k+nextpos-n-1)->type==0)
 					nextpos+=-n-1;
 				else if (nextpos==-n*sm && k+nextpos>=n && (tab+k+nextpos-n)->type==0)
 					nextpos+=-n;
 				else if (nextpos==(1-n)*sm && k+nextpos>=n && (k+nextpos)%n!=n-1 && (tab+k+nextpos-n+1)->type==0)
 					nextpos+=1-n;
-				else if (nextpos==-sm && k+nextpos>=n && (k+nextpos)%n!=n-1 && (tab+k+nextpos-n+1)->type==0)
-					nextpos+=1-n;
+				else if (nextpos==-sm && (k+nextpos)%n!=0 && (tab+k+nextpos-1)->type==0)
+					nextpos-=1;
+				else if (nextpos==sm && (k+nextpos)%n!=n-1 && (tab+k+nextpos+1)->type==0)
+					nextpos+=1;
+				else if (nextpos==(n-1)*sm && (k+nextpos)%n!=0 && (k+nextpos)<n*n-n && (tab+k+nextpos+n-1)->type==0)
+					nextpos+=n-1;
+				else if (nextpos==n*sm && (k+nextpos)<n*n-n && (tab+k+nextpos+n)->type==0)
+					nextpos+=n;
+				else if (nextpos==(n+1)*sm && (k+nextpos)%n!=n-1 && (k+nextpos)<n*n-n && (tab+k+nextpos+n+1)->type==0)
+					nextpos+=n+1;
+				else {
+					sm=(tab+k)->saut_max-1;
+					(tab+k)->satiete++;
+				}
 			}
+			(tab+k)->satiete--;
 			sm++;
 			if (sm==(tab+k)->saut_max){
+				printf("%i bouge en %i\n", k, k+nextpos);
+				(tab+k)->dernier_deplacement=tour;
 				*(tab+k+nextpos)=*(tab+k);
 				*(tab+k)=getEau();
 			}

@@ -38,7 +38,7 @@ int isPresent(obj *tab, int place, int n, int nbType);
 obj getSameType(obj inc, int tour);
 
 void predation(obj *tab, int n, int tour);
-void deplacement(obj *tab, int n);
+void deplacement(obj *tab, int n, int tour);
 void augTour(obj *tab, int n);
 int max(int a, int b);
 
