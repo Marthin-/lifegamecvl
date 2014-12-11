@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "obj.h"
-#define esc 27
-
-void clrscreen ()         {printf ("%c[2J%c[H" , esc , esc) ;}
 
 obj getEau(){
 	obj * pt=malloc(sizeof(obj));
@@ -18,6 +15,7 @@ obj getEau(){
 	pt->taille=-1;
 	pt->taille_du_bide=-1;
 	pt->saut_max=-1;
+	pt->dernier_deplacement=-1;
 	pt->metabolisme=-1;
 	pt->gestation=-1;
 	pt->frequence_reproduction=-1;
@@ -36,7 +34,8 @@ obj getPlancton(int tour){
 	pt->duree_survie=-1;//infini
 	pt->taille=1;
 	pt->taille_du_bide=-1;//pas de bide
-	pt->saut_max=0;
+	pt->saut_max=-1;
+	pt->dernier_deplacement=-1;
 	pt->metabolisme=0;
 	pt->gestation=0;
 	pt->frequence_reproduction=1;
@@ -57,6 +56,7 @@ obj getCorail(int tour){
 	pt->taille=1;
 	pt->taille_du_bide=1;
 	pt->saut_max=0;
+	pt->dernier_deplacement=-1;
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=5;
@@ -78,6 +78,7 @@ obj getBar(int tour){
 	pt->taille=3;
 	pt->taille_du_bide=2;
 	pt->saut_max=1;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=4;
 	pt->frequence_reproduction=3;
@@ -98,6 +99,7 @@ obj getThon(int tour){
 	pt->taille=3;
 	pt->taille_du_bide=2;
 	pt->saut_max=1;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=4;
 	pt->frequence_reproduction=3;
@@ -118,6 +120,7 @@ obj getPollution(int tour){
 	pt->taille=0;
 	pt->taille_du_bide=1;//taille corail
 	pt->saut_max=1;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=-1;
 	pt->gestation=-1;
 	pt->frequence_reproduction=-1;
@@ -134,12 +137,13 @@ obj getPyranha(int tour){
 	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=10;
+	pt->satiete=5;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=10;
+	pt->duree_survie=5;
 	pt->taille=2;
 	pt->taille_du_bide=1;
 	pt->saut_max=1;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=3;
@@ -161,6 +165,7 @@ obj getRequin(int tour){
 	pt->taille=4;
 	pt->taille_du_bide=3;
 	pt->saut_max=2;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=5;
@@ -182,6 +187,7 @@ obj getOrque(int tour){
 	pt->taille=6;
 	pt->taille_du_bide=5;
 	pt->saut_max=2;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=5;
@@ -203,6 +209,7 @@ obj getBaleine(int tour){
 	pt->taille=7;
 	pt->taille_du_bide=6;
 	pt->saut_max=3;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=6;
@@ -225,6 +232,7 @@ obj getPecheur(int tour){
 	pt->taille=3;
 	pt->taille_du_bide=10;
 	pt->saut_max=1;
+	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=-1;//ne se reproduit pas
 	pt->frequence_reproduction=-1;//ne se reproduit pas
@@ -244,6 +252,7 @@ obj getPont(){
 	pt->taille=2;
 	pt->taille_du_bide=-1;
 	pt->saut_max=-1;
+	pt->dernier_deplacement=-1;
 	pt->metabolisme=-1;
 	pt->gestation=-1;
 	pt->frequence_reproduction=-1;
@@ -284,7 +293,6 @@ void remplir(obj *tab, int n){
 
 void afficher(obj *tab, int n){
 	int k;
-	clrscreen();
 	for (k=0;k<n*n;k++){
 		printf("%i ", (tab+k)->type);
 		if (k%n==n-1)
@@ -299,6 +307,7 @@ void survie(obj *tab, int n, int tour){
 		if ((tab+k)->satiete!=-1 && (tab+k)->dernier_repas!=-1 && (tab+k)->duree_survie!=-1){
 			if ((tab+k)->satiete==0 && tour-((tab+k)->dernier_repas)>((tab+k)->duree_survie)){
 				killObj(tab, k);
+				printf("%i est mort\n", k);
 			}
 		}
 	}
@@ -316,6 +325,7 @@ void reproduction(obj *tab, int n, int tour){
 			if (nvPlace!=-1){
 				(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
 				*(tab+nvPlace)=getSameType(*(tab+k), tour);
+				printf("%i a produit %i\n", k, nvPlace);
 			}
 		}
 	}
@@ -480,6 +490,7 @@ void predation(obj *tab, int n, int tour){
 					(tab+k)->satiete+=(tab+proie)->taille;
 					*(tab+proie)=*(tab+k);
 					*(tab+k)=getEau();
+					printf("%i mange %i\n", k, proie);
 					i=6;
 				}
 			}
@@ -490,26 +501,81 @@ void predation(obj *tab, int n, int tour){
 	}
 }
 
-void deplacement(obj *tab, int n){
+void deplacement(obj *tab, int n, int tour){
 	int k;
 	for (k=0;k<n*n;k++){
-		int sm=(tab+k)->saut_max;
-		if (sm>0 && isPresent(tab, k, n, 0)!=-1){
-			//choisir une case aléatoirement
-			int aleat=rand()%8+1;
-			int caseLibre=0;
-			if (aleat==1 && k-n-1>=0 && k%n>0 && (tab+k-n-1)->type==0)
-				caseLibre=1;
-			if (aleat==2)
-				caseLibre=2;
-			//se déplacer d'une case dans une certaine direction
-			//mémoriser direction
-			//pos=nouvelle position
-			sm--;
-			while (sm>0){
-				//se déplacer dans la direction mémorisée si possible
-				sm--;
+		int sm=0;
+		int nextpos=0;
+		while (sm<(tab+k)->saut_max && (tab+k)->satiete>0 && (tab+k)->dernier_deplacement!=tour && isPresent(tab, k+nextpos, n, 0)!=-1){
+			if (nextpos==0){
+				int pos=0;
+				while(pos==0){
+					int aleat=rand()%8+1;
+					if (aleat==1 && k>=n && k%n!=0 && (tab+k-n-1)->type==0)
+						pos=-n-1;
+					else if (aleat==2 && k>=n && (tab+k-n)->type==0)
+						pos=-n;
+					else if (aleat==3 && k>=n && k%n!=n-1 && (tab+k-n+1)->type==0)
+						pos=1-n;
+					else if (aleat==4 && k%n!=0 && (tab+k-1)->type==0)
+						pos=-1;
+					else if (aleat==5 && k%n!=n-1 && (tab+k+1)->type==0)
+						pos=1;
+					else if (aleat==6 && k%n!=0 && k<n*n-n && (tab+k+n-1)->type==0)
+						pos=n-1;
+					else if (aleat==7 && k<n*n-n && (tab+k+n)->type==0)
+						pos=n;
+					else if (aleat==8 && k<n*n-n && k%n!=n-1 && (tab+k+n+1)->type==0)
+						pos=n+1;
+				}
+				nextpos=pos;
+			}
+			else {
+				//bouger dans la meme direction si possible
+				if (nextpos==-(n+1)*sm && k+nextpos>n && (k+nextpos)%n!=0 && (tab+k+nextpos-n-1)->type==0)
+					nextpos+=-n-1;
+				else if (nextpos==-n*sm && k+nextpos>=n && (tab+k+nextpos-n)->type==0)
+					nextpos+=-n;
+				else if (nextpos==(1-n)*sm && k+nextpos>=n && (k+nextpos)%n!=n-1 && (tab+k+nextpos-n+1)->type==0)
+					nextpos+=1-n;
+				else if (nextpos==-sm && (k+nextpos)%n!=0 && (tab+k+nextpos-1)->type==0)
+					nextpos-=1;
+				else if (nextpos==sm && (k+nextpos)%n!=n-1 && (tab+k+nextpos+1)->type==0)
+					nextpos+=1;
+				else if (nextpos==(n-1)*sm && (k+nextpos)%n!=0 && (k+nextpos)<n*n-n && (tab+k+nextpos+n-1)->type==0)
+					nextpos+=n-1;
+				else if (nextpos==n*sm && (k+nextpos)<n*n-n && (tab+k+nextpos+n)->type==0)
+					nextpos+=n;
+				else if (nextpos==(n+1)*sm && (k+nextpos)%n!=n-1 && (k+nextpos)<n*n-n && (tab+k+nextpos+n+1)->type==0)
+					nextpos+=n+1;
+				else {
+					sm=(tab+k)->saut_max-1;
+					(tab+k)->satiete++;
+				}
+			}
+			(tab+k)->satiete--;
+			sm++;
+			if (sm==(tab+k)->saut_max){
+				printf("%i bouge en %i\n", k, k+nextpos);
+				(tab+k)->dernier_deplacement=tour;
+				*(tab+k+nextpos)=*(tab+k);
+				*(tab+k)=getEau();
 			}
 		}
 	}
 }
+
+void augTour(obj *tab, int n){
+	int k;
+	for (k=0;k<n*n;k++){
+		if ((tab+k)->satiete!=-1 && (tab+k)->metabolisme!=-1)
+			(tab+k)->satiete=max((tab+k)->satiete-(tab+k)->metabolisme, 0);
+	}
+}
+
+int max(int a, int b){
+	if (b>a)
+		a=b;
+	return a;
+}
+

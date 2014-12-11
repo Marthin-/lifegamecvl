@@ -9,6 +9,7 @@ typedef struct {
 	int taille;
 	int taille_du_bide;
 	int saut_max;
+	int dernier_deplacement;
 	int metabolisme;
 	int gestation;
 	int frequence_reproduction;
@@ -37,4 +38,7 @@ int isPresent(obj *tab, int place, int n, int nbType);
 obj getSameType(obj inc, int tour);
 
 void predation(obj *tab, int n, int tour);
-void deplacement(obj *tab, int n);
+void deplacement(obj *tab, int n, int tour);
+void augTour(obj *tab, int n);
+int max(int a, int b);
+
