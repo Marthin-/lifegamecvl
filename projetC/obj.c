@@ -50,16 +50,16 @@ obj getCorail(int tour){
 	for (k=1;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=10;
+	pt->satiete=3;
 	pt->derniere_reproduction=tour;
 	pt->duree_survie=10;
 	pt->taille=1;
-	pt->taille_du_bide=1;
+	pt->taille_du_bide=5;
 	pt->saut_max=0;
 	pt->dernier_deplacement=-1;
 	pt->metabolisme=1;
 	pt->gestation=3;
-	pt->frequence_reproduction=5;
+	pt->frequence_reproduction=1;
 	return *pt;
 }
 
@@ -261,7 +261,7 @@ obj getPont(){
 
 void remplir(obj *tab, int n){
 	int k;
-	int pourcentage[9]={30,42,52,60,67,72,79,86,93};
+	int pourcentage[9]={40,70,100,100,100,100,100,100,100};
 	int check=1;
 	for (k=0;k<8;k++){
 		if (pourcentage[k]>pourcentage[k+1])
@@ -317,8 +317,8 @@ void survie(obj *tab, int n, int tour){
 	for (k=0;k<n*n;k++){
 		if ((tab+k)->satiete!=-1 && (tab+k)->dernier_repas!=-1 && (tab+k)->duree_survie!=-1){
 			if ((tab+k)->satiete==0 && tour-((tab+k)->dernier_repas)>((tab+k)->duree_survie)){
+				printf("Type %i est mort en %i\n", (tab+k)->type, k);
 				killObj(tab, k);
-				printf("%i est mort\n", k);
 			}
 		}
 	}
@@ -336,7 +336,7 @@ void reproduction(obj *tab, int n, int tour){
 			if (nvPlace!=-1){
 				(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
 				*(tab+nvPlace)=getSameType(*(tab+k), tour);
-				printf("%i a produit %i\n", k, nvPlace);
+				printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
 			}
 		}
 	}
@@ -499,9 +499,9 @@ void predation(obj *tab, int n, int tour){
 				if (proie!=-1 && (tab+k)->satiete+(tab+proie)->taille<(tab+k)->taille_du_bide){
 					(tab+k)->dernier_repas=tour;
 					(tab+k)->satiete+=(tab+proie)->taille;
+					printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
 					*(tab+proie)=*(tab+k);
 					*(tab+k)=getEau();
-					printf("%i mange %i\n", k, proie);
 					i=6;
 				}
 			}
@@ -567,7 +567,7 @@ void deplacement(obj *tab, int n, int tour){
 			(tab+k)->satiete--;
 			sm++;
 			if (sm==(tab+k)->saut_max){
-				printf("%i bouge en %i\n", k, k+nextpos);
+				printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, k+nextpos);
 				(tab+k)->dernier_deplacement=tour;
 				*(tab+k+nextpos)=*(tab+k);
 				*(tab+k)=getEau();
