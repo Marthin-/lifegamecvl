@@ -4,12 +4,12 @@
 #include "obj.h"
 
 int main(int argc, char **argv){
-	int n=5;
+	int n=20;
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
 	remplir(tab, n);
 	int tour;
-	for (tour=0;tour<50;tour++){
+	for (tour=0;tour<2;tour++){
 		printf("---------------Tour %i---------------\n", tour);
 		afficher(tab, n);
 		printf("vvvvv Survie vvvvv\n");

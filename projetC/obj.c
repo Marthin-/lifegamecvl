@@ -261,33 +261,44 @@ obj getPont(){
 
 void remplir(obj *tab, int n){
 	int k;
-	for (k=0;k<n*n;k++){
-		int aleatEau=rand()%100;
-		obj inc;
-		if (aleatEau<30)
-			inc=getEau();
-		else {
-			int mys=rand()%9+1;
-			if (mys==1)
+	int pourcentage[9]={30,42,52,60,67,72,79,86,93};
+	int check=1;
+	for (k=0;k<8;k++){
+		if (pourcentage[k]>pourcentage[k+1])
+			check=0;
+	}
+	if (check){
+		for (k=0;k<n*n;k++){
+			int aleat=rand()%100;
+			obj inc;
+			if (aleat<pourcentage[0])
+				inc=getEau();
+			else if (aleat<pourcentage[1])
 				inc=getPlancton(0);
-			else if (mys==2)
+			else if (aleat<pourcentage[2])
 				inc=getCorail(0);
-			else if (mys==3)
+			else if (aleat<pourcentage[3])
 				inc=getBar(0);
-			else if (mys==4)
+			else if (aleat<pourcentage[4])
 				inc=getThon(0);
-			else if (mys==5)
+			else if (aleat<pourcentage[5])
 				inc=getPollution(0);
-			else if (mys==6)
+			else if (aleat<pourcentage[6])
 				inc=getPyranha(0);
-			else if (mys==7)
+			else if (aleat<pourcentage[7])
 				inc=getRequin(0);
-			else if (mys==8)
+			else if (aleat<pourcentage[8])
 				inc=getOrque(0);
 			else
 				inc=getBaleine(0);
+			*(tab+k)=inc;
 		}
-		*(tab+k)=inc;
+	}
+	else {
+		printf("Attention ! Especes mal reparties, modifiez le tableau de pourcentage dans la fonction remplir.");
+		for (k=0;k<n*n;k++){
+			*(tab+k)=getEau();
+		}
 	}
 }
 
