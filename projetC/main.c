@@ -27,5 +27,5 @@ int main(int argc, char **argv){
 	}
 	afficher(tab, n);
 	free(tab);
-	return 0;
+	return EXIT_SUCCESS;
 }
