@@ -32,7 +32,7 @@ obj getPlancton(int tour){
 	pt->satiete=-1;//infini
 	pt->derniere_reproduction=tour;
 	pt->duree_survie=-1;//infini
-	pt->taille=1;
+	pt->taille=2;
 	pt->taille_du_bide=-1;//pas de bide
 	pt->saut_max=-1;
 	pt->dernier_deplacement=-1;
@@ -52,14 +52,14 @@ obj getCorail(int tour){
 	pt->dernier_repas=tour;
 	pt->satiete=3;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=10;
+	pt->duree_survie=5;
 	pt->taille=1;
 	pt->taille_du_bide=5;
 	pt->saut_max=0;
 	pt->dernier_deplacement=-1;
 	pt->metabolisme=1;
 	pt->gestation=3;
-	pt->frequence_reproduction=1;
+	pt->frequence_reproduction=10;
 	return *pt;
 }
 
@@ -261,7 +261,7 @@ obj getPont(){
 
 void remplir(obj *tab, int n){
 	int k;
-	int pourcentage[9]={40,70,100,100,100,100,100,100,100};
+	int pourcentage[9]={40,80,90,90,90,100,100,100,100};
 	int check=1;
 	for (k=0;k<8;k++){
 		if (pourcentage[k]>pourcentage[k+1])
@@ -295,7 +295,7 @@ void remplir(obj *tab, int n){
 		}
 	}
 	else {
-		printf("Attention ! Especes mal reparties, modifiez le tableau de pourcentage dans la fonction remplir.");
+		printf("Attention ! Especes mal reparties, modifiez le tableau de pourcentage dans la fonction remplir.\n");
 		for (k=0;k<n*n;k++){
 			*(tab+k)=getEau();
 		}
@@ -358,104 +358,22 @@ int apte(obj *tab, int place, int tour){
 
 int isPresent(obj *tab, int place, int n, int nbType){
 	int nvPlace=-1;
-	if (place==0){
-		if ((tab+1)->type==nbType)
-			nvPlace=1;
-		else if ((tab+n)->type==nbType)
-			nvPlace=n;
-		else if ((tab+n+1)->type==nbType)
-			nvPlace=n+1;
-	}
-	else if (place==n-1){
-		if ((tab+n-2)->type==nbType)
-			nvPlace=n-2;
-		else if ((tab+2*n-2)->type==nbType)
-			nvPlace=2*n-2;
-		else if ((tab+2*n-1)->type==nbType)
-			nvPlace=2*n-1;
-	}
-	else if (place==n*n-n){
-		if ((tab+n*n-2*n)->type==nbType)
-			nvPlace=n*n-2*n;
-		else if ((tab+n*n-2*n+1)->type==nbType)
-			nvPlace=n*n-2*n+1;
-		else if ((tab+n*n-n+1)->type==nbType)
-			nvPlace=n*n-n+1;
-	}
-	else if (place==n*n-1){
-		if ((tab+n*n-2)->type==nbType)
-			nvPlace=n*n-2;
-		else if ((tab+n*n-2-n)->type==nbType)
-			nvPlace=n*n-2-n;
-		else if ((tab+n*n-n-1)->type==nbType)
-			nvPlace=n*n-n-1;
-	}
-	else if (place<n){
-		if ((tab+place-1)->type==nbType)
-			nvPlace=place-1;
-		else if ((tab+place+1)->type==nbType)
-			nvPlace=place+1;
-		else if ((tab+place+n)->type==nbType)
-			nvPlace=place+n;
-		else if ((tab+place+n-1)->type==nbType)
-			nvPlace=place+n-1;
-		else if ((tab+place+n+1)->type==nbType)
-			nvPlace=place+n+1;
-	}
-	else if (place>n*n-n){
-		if ((tab+place-1)->type==nbType)
-			nvPlace=place-1;
-		else if ((tab+place+1)->type==nbType)
-			nvPlace=place+1;
-		else if ((tab+place-n)->type==nbType)
-			nvPlace=place-n;
-		else if ((tab+place-n-1)->type==nbType)
-			nvPlace=place+n-1;
-		else if ((tab+place-n+1)->type==nbType)
-			nvPlace=place+n+1;
-	}
-	else if (place%n==0){
-		if ((tab+place-n)->type==nbType)
-			nvPlace=place-n;
-		else if ((tab+place+n)->type==nbType)
-			nvPlace=place+n;
-		else if ((tab+place-n+1)->type==nbType)
-			nvPlace=place-n+1;
-		else if ((tab+place+n+1)->type==nbType)
-			nvPlace=place+n+1;
-		else if ((tab+place+1)->type==nbType)
-			nvPlace=place+1;
-	}
-	else if (place%n==n-1){
-		if ((tab+place-n)->type==nbType)
-			nvPlace=place-n;
-		else if ((tab+place+n)->type==nbType)
-			nvPlace=place+n;
-		else if ((tab+place-n-1)->type==nbType)
-			nvPlace=place-n-1;
-		else if ((tab+place+n-1)->type==nbType)
-			nvPlace=place+n-1;
-		else if ((tab+place-1)->type==nbType)
-			nvPlace=place-1;
-	}
-	else {
-		if ((tab+place-n)->type==nbType)
-			nvPlace=place-n;
-		else if ((tab+place+n)->type==nbType)
-			nvPlace=place+n;
-		else if ((tab+place-n-1)->type==nbType)
-			nvPlace=place-n-1;
-		else if ((tab+place+n-1)->type==nbType)
-			nvPlace=place+n-1;
-		else if ((tab+place-1)->type==nbType)
-			nvPlace=place-1;
-		else if ((tab+place-n+1)->type==nbType)
-			nvPlace=place-n+1;
-		else if ((tab+place+1)->type==nbType)
-			nvPlace=place+1;
-		else if ((tab+place+n+1)->type==nbType)
-			nvPlace=place+n+1;
-	}
+	if (place>n-1 && (tab+place-n)->type==nbType)
+		nvPlace=place-n;
+	else if (place<n*n-n && (tab+place+n)->type==nbType)
+		nvPlace=place+n;
+	else if (place>n && place%n!=0 && (tab+place-n-1)->type==nbType)
+		nvPlace=place-n-1;
+	else if (place<n*n-n && place%n!=0 && (tab+place+n-1)->type==nbType)
+		nvPlace=place+n-1;
+	else if (place%n!=0 && (tab+place-1)->type==nbType)
+		nvPlace=place-1;
+	else if (place>n-1 && place%n!=n-1 && (tab+place-n+1)->type==nbType)
+		nvPlace=place-n+1;
+	else if (place%n!=n-1 && (tab+place+1)->type==nbType)
+		nvPlace=place+1;
+	else if (place<n*n-n && place%n!=n-1 && (tab+place+n+1)->type==nbType)
+		nvPlace=place+n+1;
 	return nvPlace;
 }
 
@@ -496,12 +414,17 @@ void predation(obj *tab, int n, int tour){
 		while (i<6 && (tab+k)->mange[i]!=-1){
 			if ((tab+k)->dernier_repas<tour){
 				int proie=isPresent(tab, k, n, (tab+k)->mange[i]);
-				if (proie!=-1 && (tab+k)->satiete+(tab+proie)->taille<(tab+k)->taille_du_bide){
+				if (proie!=-1 && (tab+proie)->taille+(tab+k)->satiete<(tab+k)->taille_du_bide){
 					(tab+k)->dernier_repas=tour;
-					(tab+k)->satiete+=(tab+proie)->taille;
+					if ((tab+k)->type!=5)
+						(tab+k)->satiete+=(tab+proie)->taille;
 					printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
-					*(tab+proie)=*(tab+k);
-					*(tab+k)=getEau();
+					if ((tab+k)->type==2)
+						*(tab+proie)=getEau();
+					else{
+						*(tab+proie)=*(tab+k);
+						*(tab+k)=getEau();
+					}
 					i=6;
 				}
 			}
@@ -517,7 +440,7 @@ void deplacement(obj *tab, int n, int tour){
 	for (k=0;k<n*n;k++){
 		int sm=0;
 		int nextpos=0;
-		while (sm<(tab+k)->saut_max && (tab+k)->satiete>0 && (tab+k)->dernier_deplacement!=tour && isPresent(tab, k+nextpos, n, 0)!=-1){
+		while (sm<(tab+k)->saut_max && ((tab+k)->satiete>0 || (tab+k)->type==5) && (tab+k)->dernier_deplacement!=tour && isPresent(tab, k+nextpos, n, 0)!=-1){
 			if (nextpos==0){
 				int pos=0;
 				while(pos==0){
@@ -564,7 +487,8 @@ void deplacement(obj *tab, int n, int tour){
 					(tab+k)->satiete++;
 				}
 			}
-			(tab+k)->satiete--;
+			if ((tab+k)->type!=5)
+				(tab+k)->satiete--;
 			sm++;
 			if (sm==(tab+k)->saut_max){
 				printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, k+nextpos);

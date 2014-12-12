@@ -13,18 +13,18 @@ int main(int argc, char **argv){
 	remplir(tab, n);
 	int tour;
 	for (tour=0;tour<tourMax;tour++){
-		printf("---------------Tour %i---------------\n", tour);
-		afficher(tab, n);
-		printf("vvvvv Survie vvvvv\n");
+//		printf("---------------Tour %i---------------\n", tour);
+//		afficher(tab, n);
+//		printf("vvvvv Survie vvvvv\n");
 		survie(tab, n, tour);
-		afficher(tab, n);
-		printf("vvvvv Reproduction vvvvv\n");
+//		afficher(tab, n);
+//		printf("vvvvv Reproduction vvvvv\n");
 		reproduction(tab, n, tour);
-		afficher(tab, n);
-		printf("vvvvv Predation vvvvv\n");
+//		afficher(tab, n);
+//		printf("vvvvv Predation vvvvv\n");
 		predation(tab, n, tour);
-		afficher(tab, n);
-		printf("vvvvv Deplacement vvvvv\n");
+//		afficher(tab, n);
+//		printf("vvvvv Deplacement vvvvv\n");
 		deplacement(tab, n, tour);
 		augTour(tab, n);
 	}
