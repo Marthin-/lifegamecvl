@@ -42,3 +42,6 @@ void deplacement(obj *tab, int n, int tour);
 void augTour(obj *tab, int n);
 int max(int a, int b);
 
+void checkDeath(obj *tab, int n, int tour, int *death, int *deathLength, int *deathDate);
+void deathHistory(int *death, int deathLength, int *deathDate);
+

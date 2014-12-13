@@ -32,7 +32,7 @@ obj getPlancton(int tour){
 	pt->satiete=-1;//infini
 	pt->derniere_reproduction=tour;
 	pt->duree_survie=-1;//infini
-	pt->taille=2;
+	pt->taille=3;
 	pt->taille_du_bide=-1;//pas de bide
 	pt->saut_max=-1;
 	pt->dernier_deplacement=-1;
@@ -72,16 +72,16 @@ obj getBar(int tour){
 	for (k=2;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=10;
+	pt->satiete=3;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=10;
+	pt->duree_survie=5;
 	pt->taille=3;
-	pt->taille_du_bide=2;
+	pt->taille_du_bide=5;
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
-	pt->gestation=4;
-	pt->frequence_reproduction=3;
+	pt->gestation=3;
+	pt->frequence_reproduction=7;
 	return *pt;
 }
 
@@ -93,16 +93,16 @@ obj getThon(int tour){
 	for (k=1;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=10;
+	pt->satiete=3;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=10;
+	pt->duree_survie=5;
 	pt->taille=3;
-	pt->taille_du_bide=2;
+	pt->taille_du_bide=5;
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
-	pt->gestation=4;
-	pt->frequence_reproduction=3;
+	pt->gestation=3;
+	pt->frequence_reproduction=7;
 	return *pt;
 }
 
@@ -261,7 +261,7 @@ obj getPont(){
 
 void remplir(obj *tab, int n){
 	int k;
-	int pourcentage[9]={40,80,90,90,90,100,100,100,100};
+	int pourcentage[9]={30,65,75,85,95,100,100,100,100};
 	int check=1;
 	for (k=0;k<8;k++){
 		if (pourcentage[k]>pourcentage[k+1])
@@ -414,7 +414,7 @@ void predation(obj *tab, int n, int tour){
 		while (i<6 && (tab+k)->mange[i]!=-1){
 			if ((tab+k)->dernier_repas<tour){
 				int proie=isPresent(tab, k, n, (tab+k)->mange[i]);
-				if (proie!=-1 && (tab+proie)->taille+(tab+k)->satiete<(tab+k)->taille_du_bide){
+				if (proie!=-1 && (tab+proie)->taille+(tab+k)->satiete<=(tab+k)->taille_du_bide){
 					(tab+k)->dernier_repas=tour;
 					if ((tab+k)->type!=5)
 						(tab+k)->satiete+=(tab+proie)->taille;
@@ -514,3 +514,33 @@ int max(int a, int b){
 	return a;
 }
 
+void checkDeath(obj *tab, int n, int tour, int *death, int *deathLength, int *deathDate){
+	int k;
+	int temp[9]={0,0,0,0,0,0,0,0,0};
+	for (k=0;k<n*n;k++){
+		if ((tab+k)->type>0 && (tab+k)->type<10)
+			temp[(tab+k)->type-1]=1;
+	}
+	for (k=0;k<9;k++){
+		if (temp[k]==0){
+			int trouv=0;
+			int i;
+			for (i=0;i<*deathLength && !trouv;i++){
+				if (*(death+i)==k+1)
+					trouv=1;
+			}
+			if (!trouv){
+				*(death+(*deathLength))=k+1;
+				*(deathDate+(*deathLength))=tour;
+				(*deathLength)++;
+			}
+		}
+	}
+}
+
+void deathHistory(int *death, int deathLength, int *deathDate){
+	int k;
+	for (k=0;k<deathLength;k++){
+		printf("L'espece %i a disparu au tour %i\n", *(death+k), *(deathDate+k));
+	}
+}
