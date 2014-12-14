@@ -9,13 +9,13 @@ construire pont
 */
 
 //choisir l'action du pecheur via un menu
-int menu_choix(){
-	int fin=0;;
-	int deplacer=0;
-	int pecher=0;
-	int lancer=0;
-	int construire=0;
-
+int menu_choix(int* tableau){
+	int fin=tableau[4];
+	int deplacer=tableau[0];
+	int pecher=tableau[1];
+	int lancer=tableau[2];
+	int construire=tableau[3];
+	int choix=5;
 		while(fin!=1){
 			if(!deplacer){
 				printf("\n1 : se deplacer\n");
@@ -31,15 +31,31 @@ int menu_choix(){
 			}	
 			printf("5 : fin\n");
 		}
-
+	scanf("%i", &choix);	
 return choix;	
 }
 
 
 //tour du pecheur
 void tour_pecheur(obj* joueur){
+	int i=0;
 	int action;
-	action=menu_choix();
+	int* tableau_menu=malloc(5*sizeof(int));
+		for(i=0;i<4;i++){
+			tableau_menu[i]=0;
+		}	
+	action=menu_choix(tableau_menu);
 	switch(action){
 		case(1):
 			deplacement_pecheur(tab, joueur);
+			tableau_menu[0]=1;
+			action=menu_choix(tableau_menu);
+		break;
+
+		case(2):
+			pecher(tab, joueur);
+			tableau_menu[0]=1;
+			action=menu(tableau_menu);
+		break;
+	}
+}
