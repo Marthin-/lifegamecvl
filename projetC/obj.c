@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "obj.h"
 
+void clrscreen (){
+	printf ("%c[2J%c[H" , esc , esc) ;
+	}
+
 obj getEau(){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=0;
@@ -19,6 +23,7 @@ obj getEau(){
 	pt->metabolisme=-1;
 	pt->gestation=-1;
 	pt->frequence_reproduction=-1;
+	pt->signe='~';
 	return *pt;
 }
 
@@ -39,6 +44,7 @@ obj getPlancton(int tour){
 	pt->metabolisme=0;
 	pt->gestation=0;
 	pt->frequence_reproduction=1;
+	pt->signe='.';
 	return *pt;
 }
 
@@ -60,6 +66,7 @@ obj getCorail(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=10;
+	pt->signe='%';
 	return *pt;
 }
 
@@ -82,6 +89,7 @@ obj getBar(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=7;
+	pt->signe='b';
 	return *pt;
 }
 
@@ -103,6 +111,7 @@ obj getThon(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=7;
+	pt->signe='T';
 	return *pt;
 }
 
@@ -124,6 +133,7 @@ obj getPollution(int tour){
 	pt->metabolisme=-1;
 	pt->gestation=-1;
 	pt->frequence_reproduction=-1;
+	pt->signe='&';
 	return *pt;
 }
 
@@ -147,6 +157,7 @@ obj getPyranha(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=3;
+	pt->signe='p';
 	return *pt;
 }
 
@@ -169,6 +180,7 @@ obj getRequin(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=5;
+	pt->signe='R';
 	return *pt;
 }
 
@@ -191,6 +203,7 @@ obj getOrque(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=5;
+	pt->signe='O';
 	return *pt;
 }
 
@@ -213,13 +226,14 @@ obj getBaleine(int tour){
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=6;
+	pt->signe='B';
 	return *pt;
 }
 
 obj getPecheur(int tour){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=10;
-	pt->mange[0]=3;
+	pt->mange[0]=3;  
 	pt->mange[1]=4;
 	pt->mange[2]=6;
 	pt->mange[3]=7;
@@ -233,9 +247,10 @@ obj getPecheur(int tour){
 	pt->taille_du_bide=10;
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
-	pt->metabolisme=1;
+	pt->metabolisme=0;
 	pt->gestation=-1;//ne se reproduit pas
 	pt->frequence_reproduction=-1;//ne se reproduit pas
+	pt->signe='@';
 	return *pt;
 }
 
@@ -256,6 +271,7 @@ obj getPont(){
 	pt->metabolisme=-1;
 	pt->gestation=-1;
 	pt->frequence_reproduction=-1;
+	pt->signe='H';
 	return *pt;
 }
 
@@ -304,8 +320,9 @@ void remplir(obj *tab, int n){
 
 void afficher(obj *tab, int n){
 	int k;
+	clrscreen();
 	for (k=0;k<n*n;k++){
-		printf("%i ", (tab+k)->type);
+		printf("%c ", (tab+k)->signe);
 		if (k%n==n-1)
 			printf("\n");
 	}
@@ -317,7 +334,7 @@ void survie(obj *tab, int n, int tour){
 	for (k=0;k<n*n;k++){
 		if ((tab+k)->satiete!=-1 && (tab+k)->dernier_repas!=-1 && (tab+k)->duree_survie!=-1){
 			if ((tab+k)->satiete==0 && tour-((tab+k)->dernier_repas)>((tab+k)->duree_survie)){
-				printf("Type %i est mort en %i\n", (tab+k)->type, k);
+//				printf("Type %i est mort en %i\n", (tab+k)->type, k);
 				killObj(tab, k);
 			}
 		}
@@ -336,7 +353,7 @@ void reproduction(obj *tab, int n, int tour){
 			if (nvPlace!=-1){
 				(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
 				*(tab+nvPlace)=getSameType(*(tab+k), tour);
-				printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
+//				printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
 			}
 		}
 	}
@@ -418,7 +435,7 @@ void predation(obj *tab, int n, int tour){
 					(tab+k)->dernier_repas=tour;
 					if ((tab+k)->type!=5)
 						(tab+k)->satiete+=(tab+proie)->taille;
-					printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
+//					printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
 					if ((tab+k)->type==2)
 						*(tab+proie)=getEau();
 					else{
@@ -491,7 +508,7 @@ void deplacement(obj *tab, int n, int tour){
 				(tab+k)->satiete--;
 			sm++;
 			if (sm==(tab+k)->saut_max){
-				printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, k+nextpos);
+//				printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, k+nextpos);
 				(tab+k)->dernier_deplacement=tour;
 				*(tab+k+nextpos)=*(tab+k);
 				*(tab+k)=getEau();

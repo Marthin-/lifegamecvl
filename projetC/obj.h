@@ -1,3 +1,5 @@
+#define esc 27
+
 
 typedef struct {
 	int type;//0:eau, 1:plancton, 2:corail, 3:bar...
@@ -13,6 +15,7 @@ typedef struct {
 	int metabolisme;
 	int gestation;
 	int frequence_reproduction;
+	char signe;
 }obj;
 
 obj getEau();//0
@@ -44,4 +47,4 @@ int max(int a, int b);
 
 void checkDeath(obj *tab, int n, int tour, int *death, int *deathLength, int *deathDate);
 void deathHistory(int *death, int deathLength, int *deathDate);
-
+void clrscreen();

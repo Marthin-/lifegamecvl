@@ -15,9 +15,9 @@ int menu_choix(int* tableau){
 	int pecher=tableau[1];
 	int lancer=tableau[2];
 	int construire=tableau[3];
-	int choix=5;
-		while(fin!=1){
-			if(!deplacer){
+	int choix=0;
+		printf("=============================");
+		if(!deplacer){
 				printf("\n1 : se deplacer\n");
 			}
 			if(!pecher){
@@ -30,14 +30,16 @@ int menu_choix(int* tableau){
 				printf("4 : construire\n");
 			}	
 			printf("5 : fin\n");
-		}
+	printf("=============================");
+
+
 	scanf("%i", &choix);	
 return choix;	
 }
 
 
 //tour du pecheur
-void tour_pecheur(obj* joueur){
+obj* tour_pecheur(obj joueur){
 	int i=0;
 	int action;
 	int* tableau_menu=malloc(5*sizeof(int));
@@ -54,8 +56,36 @@ void tour_pecheur(obj* joueur){
 
 		case(2):
 			pecher(tab, joueur);
-			tableau_menu[0]=1;
+			tableau_menu[1]=1;
 			action=menu(tableau_menu);
 		break;
+
+		case(3):
+			lancer_poisson(tab, joueur);
+			tableau_menu[2]=1;
+			action=menu(tableau_menu);
+		break;
+
+		case(4):
+			construire_pont(tab, joueur);
+			tableau_menu[3]=1;
+			action=menu(tableau_menu);
+		break;
+
+		case(5):
+			fin_tour_pecheur();
+		break;	
+		
+		default:
+			printf("entrez une option existante\n");
+			action=menu_choix(tableau_menu);
+		break;	
 	}
+return (obj)joueur;	
 }
+
+deplacement_pecheur(obj* tab, obj joueur){
+
+
+return (obj*) map;
+}	
