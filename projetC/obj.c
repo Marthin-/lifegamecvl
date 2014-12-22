@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include "obj.h"
 
-void clrscreen (){
-	printf ("%c[2J%c[H" , esc , esc) ;
-	}
-
 obj getEau(){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=0;
@@ -277,7 +273,7 @@ obj getPont(){
 
 void remplir(obj *tab, int n){
 	int k;
-	int pourcentage[9]={30,65,75,85,95,100,100,100,100};
+	int pourcentage[9]={30,45,55,60,65,70,77,84,91};
 	int check=1;
 	for (k=0;k<8;k++){
 		if (pourcentage[k]>pourcentage[k+1])
@@ -316,6 +312,10 @@ void remplir(obj *tab, int n){
 			*(tab+k)=getEau();
 		}
 	}
+}
+
+void clrscreen (){
+	printf("%c[2J%c[H" , esc , esc);
 }
 
 void afficher(obj *tab, int n){
