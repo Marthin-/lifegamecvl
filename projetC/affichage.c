@@ -2,13 +2,13 @@
 #include "affichage.h"
 
 #define esc 27
-void clrscreen (){
+void clearScreen (){
         printf("%c[2J%c[H" , esc , esc);
 }
 
 void afficher(obj *tab, int n){
         int k;
-        clrscreen();
+        clearScreen();
         for (k=0;k<n*n;k++){
 		char sym;
 		if ((tab+k)->type==0)
@@ -36,6 +36,19 @@ void afficher(obj *tab, int n){
 		else if ((tab+k)->type==11)
 			sym='H';
                 printf("%c ", sym);
+                if (k%n==n-1)
+                        printf("\n");
+        }
+        printf("\n");
+}
+
+void afficher2(obj *tab, int n, int tour){
+        int k;
+	clearScreen();
+        for (k=0;k<n*n;k++){
+                printf("%i ", (tab+k)->type);
+		if (k==n-1)
+			printf("  Tour %i", tour);
                 if (k%n==n-1)
                         printf("\n");
         }

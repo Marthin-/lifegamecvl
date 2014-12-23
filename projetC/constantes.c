@@ -138,9 +138,9 @@ obj getPyranha(int tour){
         pt->dernier_repas=tour;
         pt->satiete=5;
         pt->derniere_reproduction=tour;
-        pt->duree_survie=5;
+        pt->duree_survie=10;
         pt->taille=2;
-        pt->taille_du_bide=1;
+        pt->taille_du_bide=5;
         pt->saut_max=1;
         pt->dernier_deplacement=tour;
         pt->metabolisme=1;

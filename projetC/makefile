@@ -3,5 +3,5 @@ vie: affichage.o constantes.o main.o regles_de_vie.o remplir.o
 %.o: %.c
 	gcc -Wall -c $^
 c:
-	rm *.o
+	rm *.o && rm vie
 

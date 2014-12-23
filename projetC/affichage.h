@@ -3,6 +3,7 @@
 
 #include "obj.h"
 void afficher(obj *tab, int n);
-void clrscreen();
+void afficher2(obj *tab, int n, int tour);
+void clearScreen();
 
 #endif

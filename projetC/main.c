@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>//malloc, calloc
+#include <stdlib.h>//malloc, calloc, strtol
 #include <time.h>//rand
-#include <unistd.h>//usleep
+//#include <unistd.h>//usleep
 #include "affichage.h"
 #include "constantes.h"
 #include "obj.h"
@@ -9,9 +9,15 @@
 #include "remplir.h"
 
 int main(int argc, char **argv){
-	printf("Combien de tours voulez-vous ?\n");
 	int tourMax;
-	scanf("%i", &tourMax);
+	if (argc==2){
+		char *endptr;
+		tourMax=(int) strtol(argv[1], &endptr, 10);
+	}
+	else {
+		printf("Combien de tours voulez-vous ?\n");
+		scanf("%i", &tourMax);
+	}
 	int n=20;
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
@@ -21,24 +27,19 @@ int main(int argc, char **argv){
 	int deathLength=0;
 	int tour;
 	for (tour=0;tour<tourMax;tour++){
-//		printf("---------------Tour %i---------------\n", tour);
-//		afficher(tab, n);
-//		printf("vvvvv Survie vvvvv\n");
 		survie(tab, n, tour);
 		checkDeath(tab, n, tour, death, &deathLength, deathDate);
-		afficher(tab, n);
-		usleep(200000);
-//		printf("vvvvv Reproduction vvvvv\n");
+//		afficher(tab, n);
+		afficher2(tab, n, tour);
+//		usleep(200000);
+		getchar();
 		reproduction(tab, n, tour);
-//		afficher(tab, n);
-//		printf("vvvvv Predation vvvvv\n");
 		predation(tab, n, tour);
-//		afficher(tab, n);
-//		printf("vvvvv Deplacement vvvvv\n");
 		deplacement(tab, n, tour);
 		augTour(tab, n);
 	}
-	afficher(tab, n);
+//	afficher(tab, n);
+	afficher2(tab, n, tour);
 	deathHistory(death, deathLength, deathDate);
 	free(death);
 	free(tab);
