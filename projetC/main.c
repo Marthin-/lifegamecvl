@@ -1,8 +1,12 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <stdlib.h>//malloc, calloc
+#include <time.h>//rand
 #include <unistd.h>//usleep
+#include "affichage.h"
+#include "constantes.h"
 #include "obj.h"
+#include "regles_de_vie.h"
+#include "remplir.h"
 
 int main(int argc, char **argv){
 	printf("Combien de tours voulez-vous ?\n");

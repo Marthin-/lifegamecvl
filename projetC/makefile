@@ -1,9 +1,7 @@
-vie: main.o  obj.o
+vie: affichage.o constantes.o main.o regles_de_vie.o remplir.o
 	gcc -Wall -o $@ $^
-main.o: main.c
+%.o: %.c
 	gcc -Wall -c $^
-obj.o: obj.c obj.h
-	gcc -Wall -c $^
-clean:
-	rm *.o | rm *.gch
+c:
+	rm *.o
 
