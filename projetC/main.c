@@ -7,6 +7,7 @@
 #include "obj.h"
 #include "regles_de_vie.h"
 #include "remplir.h"
+//#include <SDL/SDL.h>
 
 int main(int argc, char **argv){
 	int tourMax;
@@ -25,6 +26,21 @@ int main(int argc, char **argv){
 	int * death=calloc(9, sizeof(int));
 	int * deathDate=calloc(9, sizeof(int));
 	int deathLength=0;
+/*
+//------------------------------------------------------------------
+	SDL_Init(SDL_INIT_VIDEO);
+//        SDL_WM_SetIcon(SDL_LoadBMP("ico.bmp"), NULL);
+	int taille_bmp=48;
+	int taille_bordure=3;
+	int taille_separation=1;
+	int larg=100;//largeur de la colone de droite
+	int haut=50;
+        SDL_Surface *ecran=SDL_SetVideoMode(taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+larg, taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+haut, 32, SDL_HWSURFACE);
+        SDL_WM_SetCaption("Jeu de la vie", NULL);
+        SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));  
+//	SDL_Flip(ecran);
+//--------------------------------------------------------------------
+*/
 	int tour;
 	for (tour=0;tour<tourMax;tour++){
 		survie(tab, n, tour);
@@ -45,3 +61,4 @@ int main(int argc, char **argv){
 	free(tab);
 	return EXIT_SUCCESS;
 }
+

@@ -55,3 +55,7 @@ void afficher2(obj *tab, int n, int tour){
         printf("\n");
 }
 
+void print_sdl(obj *tab, int n, int tour){
+	
+}
+
