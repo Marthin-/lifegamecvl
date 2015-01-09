@@ -23,6 +23,8 @@ int main(int argc, char **argv){
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
 	int nbj=0;//nombre de joueurs
+	printf("combien de joueurs (max. 4) ?\n");
+	scanf("%i",&nbj);
 	remplir(tab, n, nbj);
 	int * death=calloc(9, sizeof(int));
 	int * deathDate=calloc(9, sizeof(int));
@@ -49,7 +51,7 @@ int main(int argc, char **argv){
 		afficher(tab, n, tour);
 //		printsdl();
 		getchar();
-		reproduction(tab, n, tour);
+		reproduction2(tab, n, tour);
 		predation(tab, n, tour);
 		deplacement(tab, n, tour);
 		augTour(tab, n);

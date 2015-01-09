@@ -85,6 +85,11 @@ return (obj)joueur;
 }
 
 deplacement_pecheur(obj* tab, obj joueur){
+	printf("utilisez les touches z,q,s,d pour vous deplacer\n");
+	char dpct;
+	scanf("%c", &dpct);
+
+		if (dpct=='z'){
 
 
 return (obj*) map;
