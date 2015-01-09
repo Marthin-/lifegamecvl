@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>//malloc, calloc, strtol
 #include <time.h>//rand
-//#include <unistd.h>//usleep
 #include "affichage.h"
 #include "constantes.h"
 #include "obj.h"
@@ -23,8 +22,10 @@ int main(int argc, char **argv){
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
 	int nbj=0;//nombre de joueurs
-	printf("combien de joueurs (max. 4) ?\n");
-	scanf("%i",&nbj);
+/*	while (nbj<1 || nbj>4){
+		printf("combien de joueurs (max. 4) ?\n");
+		scanf("%i",&nbj);
+	}*/
 	remplir(tab, n, nbj);
 	int * death=calloc(9, sizeof(int));
 	int * deathDate=calloc(9, sizeof(int));
@@ -49,9 +50,8 @@ int main(int argc, char **argv){
 		survie(tab, n, tour);
 		checkDeath(tab, n, tour, death, &deathLength, deathDate);
 		afficher(tab, n, tour);
-//		printsdl();
 		getchar();
-		reproduction2(tab, n, tour);
+		reproduction(tab, n, tour);
 		predation(tab, n, tour);
 		deplacement(tab, n, tour);
 		augTour(tab, n);
