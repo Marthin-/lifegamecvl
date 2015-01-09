@@ -1,5 +1,7 @@
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>//rand
+#include <time.h>
 #include "regles_de_vie.h"
 #include "constantes.h"//getEau...
 
@@ -54,6 +56,77 @@ int isPresent(obj *tab, int place, int n, int nbType){
         return nvPlace;
 }
 
+int isPresent2(obj *tab, int place, int n, int nbType){//retourne les positions du type recherché en base 2
+/*
+1  2  4
+8     16
+32 64 128
+*/
+	int nvPlace=0;//retourne 0 si rien trouvé
+        if (place>n && place%n!=0 && (tab+place-n-1)->type==nbType)
+                nvPlace+=1;
+	if (place>n-1 && (tab+place-n)->type==nbType)
+                nvPlace+=2;
+        if (place>n-1 && place%n!=n-1 && (tab+place-n+1)->type==nbType)
+                nvPlace+=4;
+        if (place%n!=0 && (tab+place-1)->type==nbType)
+                nvPlace+=8;
+        if (place%n!=n-1 && (tab+place+1)->type==nbType)
+                nvPlace+=16;
+        if (place<n*n-n && place%n!=0 && (tab+place+n-1)->type==nbType)
+                nvPlace+=32;
+        if (place<n*n-n && (tab+place+n)->type==nbType)
+                nvPlace+=64;
+        if (place<n*n-n && place%n!=n-1 && (tab+place+n+1)->type==nbType)
+                nvPlace+=128;
+        return nvPlace;
+}
+
+int returnPlace(int is, int place, int n){//retourne une place aléatoire après la fonction isPresent2
+	int nbcase=0;
+	int bin=is;
+	int k;
+	for (k=0;k<8;k++){
+		if (bin&1)
+			nbcase++;
+		bin=bin>>1;
+	}
+	if (!nbcase)
+		return place;
+	int aleat=rand()%nbcase+1;
+	int nvPlace;
+	int caseVue=0;
+	bin=is;
+	for (k=0;k<8; k++){
+		if (bin&1)
+			caseVue++;
+		if (caseVue==aleat){
+			nvPlace=pow(2, k);
+			k=8;
+		}
+		bin=bin>>1;
+	}
+	printf("caseVue : %i\nnv : %i\n", caseVue, nvPlace);
+	if (nvPlace==1)
+		nvPlace=place-n-1;
+	else if (nvPlace==2)
+		nvPlace=place-n;
+	else if (nvPlace==4)
+		nvPlace=place-n+1;
+	else if (nvPlace==8)
+		nvPlace=place-1;
+	else if (nvPlace==16)
+		nvPlace=place+1;
+	else if (nvPlace==32)
+		nvPlace=place+n-1;
+	else if (nvPlace==64)
+		nvPlace=place+n;
+	else if (nvPlace==128)
+		nvPlace=place+n+1;
+	printf("place : %i\nnbcase : %i\nnv : %i\n", place, nbcase, nvPlace);
+	return nvPlace;
+}
+
 obj getSameType(obj oldObj, int tour){
         obj inc;
         int mys=oldObj.type;
@@ -94,6 +167,20 @@ void reproduction(obj *tab, int n, int tour){
                                 *(tab+nvPlace)=getSameType(*(tab+k), tour);
 //                              printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
                         }
+                }
+        }
+}
+
+void reproduction2(obj *tab, int n, int tour){
+        int k;
+        for (k=0;k<n*n;k++){
+                if (apte(tab, k, tour)){
+			int is=isPresent2(tab, k, n, 0);
+			if (is!=0){
+				int nvPlace=returnPlace(is, k, n);
+				(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
+				*(tab+nvPlace)=getSameType(*(tab+k), tour);
+			}
                 }
         }
 }
