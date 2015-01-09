@@ -3,6 +3,10 @@
 #include "regles_de_vie.h"
 #include "constantes.h"//getEau...
 
+void killObj(obj *tab, int place){
+        *(tab+place)=getEau();
+}
+
 void survie(obj *tab, int n, int tour){
         int k;
         for (k=0;k<n*n;k++){
@@ -10,24 +14,6 @@ void survie(obj *tab, int n, int tour){
                         if ((tab+k)->satiete==0 && tour-((tab+k)->dernier_repas)>((tab+k)->duree_survie)){
 //                              printf("Type %i est mort en %i\n", (tab+k)->type, k);
                                 killObj(tab, k);
-                        }
-                }
-        }
-}
-
-void killObj(obj *tab, int place){
-        *(tab+place)=getEau();
-}
-
-void reproduction(obj *tab, int n, int tour){
-        int k;
-        for (k=0;k<n*n;k++){
-                if (apte(tab, k, tour)){
-                        int nvPlace=isPresent(tab, k, n, 0);
-                        if (nvPlace!=-1){
-                                (tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
-                                *(tab+nvPlace)=getSameType(*(tab+k), tour);
-//                              printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
                         }
                 }
         }
@@ -96,6 +82,20 @@ obj getSameType(obj oldObj, int tour){
         else
                 inc=getPont();
         return inc;
+}
+
+void reproduction(obj *tab, int n, int tour){
+        int k;
+        for (k=0;k<n*n;k++){
+                if (apte(tab, k, tour)){
+                        int nvPlace=isPresent(tab, k, n, 0);
+                        if (nvPlace!=-1){
+                                (tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
+                                *(tab+nvPlace)=getSameType(*(tab+k), tour);
+//                              printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
+                        }
+                }
+        }
 }
 
 void predation(obj *tab, int n, int tour){

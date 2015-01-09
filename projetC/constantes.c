@@ -101,7 +101,7 @@ obj getThon(int tour){
         pt->dernier_deplacement=tour;
         pt->metabolisme=1;
         pt->gestation=3;
-        pt->frequence_reproduction=7;
+        pt->frequence_reproduction=10;
         return *pt;
 }
 
@@ -204,14 +204,14 @@ obj getBaleine(int tour){
         pt->dernier_repas=tour;
         pt->satiete=10;
         pt->derniere_reproduction=tour;
-        pt->duree_survie=10;
+        pt->duree_survie=7;
         pt->taille=7;
         pt->taille_du_bide=6;
         pt->saut_max=3;
         pt->dernier_deplacement=tour;
         pt->metabolisme=1;
         pt->gestation=3;
-        pt->frequence_reproduction=6;
+        pt->frequence_reproduction=10;
         return *pt;
 }
 
@@ -249,6 +249,26 @@ obj getPont(){
         pt->derniere_reproduction=-1;
         pt->duree_survie=-1;//infini
         pt->taille=2;
+        pt->taille_du_bide=-1;
+        pt->saut_max=-1;
+        pt->dernier_deplacement=-1;
+        pt->metabolisme=-1;
+        pt->gestation=-1;
+        pt->frequence_reproduction=-1;
+        return *pt;
+}
+
+obj getSol(){
+        obj * pt=malloc(sizeof(obj));
+        pt->type=12;
+        int k;
+        for (k=0;k<6;k++)
+                pt->mange[k]=-1;//ne mange personne
+        pt->dernier_repas=-1;//pas défini
+        pt->satiete=-1;
+        pt->derniere_reproduction=-1;
+        pt->duree_survie=-1;//infini
+        pt->taille=-1;
         pt->taille_du_bide=-1;
         pt->saut_max=-1;
         pt->dernier_deplacement=-1;

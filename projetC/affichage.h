@@ -3,8 +3,8 @@
 
 #include "obj.h"
 void clearScreen();
-void afficher(obj *tab, int n);
+void afficher(obj *tab, int n, int tour);
 void afficher2(obj *tab, int n, int tour);
-void print_sdl(obj *tab, int n, int tour);
+void printsdl(obj *tab, int n, int tour);
 
 #endif

@@ -3,7 +3,7 @@
 #include "constantes.h"//getEau...
 #include "remplir.h"
 
-void remplir(obj *tab, int n){
+void remplir(obj *tab, int n, int nbj){
 	int k;
 	int pourcentage[9]={30,45,55,60,65,70,77,84,91};
 	int check=1;
@@ -15,7 +15,13 @@ void remplir(obj *tab, int n){
 		for (k=0;k<n*n;k++){
 			int aleat=rand()%100;
 			obj inc;
-			if (aleat<pourcentage[0])
+			if (nbj && k%n==0){
+				inc=getPecheur(0);
+				nbj--;
+			}
+			else if (k%n==0 || k%n==n-1)
+				inc=getSol();
+			else if (aleat<pourcentage[0])
 				inc=getEau();
 			else if (aleat<pourcentage[1])
 				inc=getPlancton(0);

@@ -15,5 +15,9 @@ obj getOrque(int tour);//8
 obj getBaleine(int tour);//9
 obj getPecheur(int tour);//10
 obj getPont();//11
-
+obj getSol();//12
+/*
+obj getPontEtPecheur();//13
+obj getSolEtPecheur();//14
+*/
 #endif

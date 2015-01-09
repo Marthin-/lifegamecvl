@@ -3,6 +3,7 @@
 
 #include "obj.h"
 
-void remplir(obj *tab, int n);
+void remplir(obj *tab, int n, int nb_joueurs);
 
 #endif
+

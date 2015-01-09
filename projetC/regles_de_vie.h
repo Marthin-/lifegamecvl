@@ -3,12 +3,12 @@
 
 #include "obj.h"
 
-void survie(obj *tab, int n, int tour);
 void killObj(obj *tab, int place);
-void reproduction(obj *tab, int n, int tour);
+void survie(obj *tab, int n, int tour);
 int apte(obj *tab, int place, int tour);
 int isPresent(obj *tab, int place, int n, int nbType);
 obj getSameType(obj inc, int tour);
+void reproduction(obj *tab, int n, int tour);
 
 void predation(obj *tab, int n, int tour);
 void deplacement(obj *tab, int n, int tour);

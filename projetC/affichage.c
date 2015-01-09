@@ -6,7 +6,7 @@ void clearScreen (){
         printf("%c[2J%c[H" , esc , esc);
 }
 
-void afficher(obj *tab, int n){
+void afficher(obj *tab, int n, int tour){
         int k;
         clearScreen();
         for (k=0;k<n*n;k++){
@@ -35,7 +35,13 @@ void afficher(obj *tab, int n){
 			sym='@';
 		else if ((tab+k)->type==11)
 			sym='H';
+		else if ((tab+k)->type==12)
+			sym='X';
+		else
+			sym='?';//erreur
                 printf("%c ", sym);
+		if (k==n*n-1)
+                        printf("  Tour %i", tour);
                 if (k%n==n-1)
                         printf("\n");
         }
@@ -47,7 +53,7 @@ void afficher2(obj *tab, int n, int tour){
 	clearScreen();
         for (k=0;k<n*n;k++){
                 printf("%i ", (tab+k)->type);
-		if (k==n-1)
+		if (k==n*n-1)
 			printf("  Tour %i", tour);
                 if (k%n==n-1)
                         printf("\n");
@@ -55,7 +61,7 @@ void afficher2(obj *tab, int n, int tour){
         printf("\n");
 }
 
-void print_sdl(obj *tab, int n, int tour){
+void printsdl(obj *tab, int n, int tour){
 	
 }
 
