@@ -177,7 +177,7 @@ void reproduction2(obj *tab, int n, int tour){
                 if (apte(tab, k, tour)){
 			int is=isPresent2(tab, k, n, 0);
 			if (is!=0){
-				int nvPlace=returnPlace(is, place, n);
+				int nvPlace=returnPlace(is, k, n);
 				(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
 				*(tab+nvPlace)=getSameType(*(tab+k), tour);
 			}
