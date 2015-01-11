@@ -30,17 +30,8 @@ obj getPlancton(int tour){
 	int k;
 	for (k=0;k<6;k++)
 		pt->mange[k]=-1;//ne mange personne
-	strcpy(pt->name,"plancton");
-	pt->dernier_repas=-1;//le plancton ne mange pas
-	pt->satiete=-1;//infini
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=-1;//infini
 	pt->taille=3;
-	pt->taille_du_bide=-1;//pas de bide
-	pt->saut_max=-1;
-	pt->dernier_deplacement=-1;
-	pt->metabolisme=0;
-	pt->gestation=0;
 	pt->frequence_reproduction=1;
 	return *pt;
 }
@@ -52,7 +43,6 @@ obj getCorail(int tour){
 	int k;
 	for (k=1;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"corail");
 	pt->dernier_repas=tour;
 	pt->satiete=3;
 	pt->derniere_reproduction=tour;
@@ -60,7 +50,6 @@ obj getCorail(int tour){
 	pt->taille=1;
 	pt->taille_du_bide=5;
 	pt->saut_max=0;
-	pt->dernier_deplacement=-1;
 	pt->metabolisme=1;
 	pt->gestation=3;
 	pt->frequence_reproduction=10;
@@ -71,11 +60,11 @@ obj getBar(int tour){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=3;
 	pt->mange[0]=1;
-	pt->mange[1]=11;
+	pt->mange[1]=10;
+	pt->mange[2]=12;
 	int k;
-	for (k=2;k<6;k++)
+	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"bar");
 	pt->dernier_repas=tour;
 	pt->satiete=3;
 	pt->derniere_reproduction=tour;
@@ -97,7 +86,6 @@ obj getThon(int tour){
 	int k;
 	for (k=1;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"thon");
 	pt->dernier_repas=tour;
 	pt->satiete=3;
 	pt->derniere_reproduction=tour;
@@ -119,18 +107,9 @@ obj getPollution(int tour){
 	int k;
 	for (k=1;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"pollution");
 	pt->dernier_repas=tour;
-	pt->satiete=-1;
-	pt->derniere_reproduction=-1;
-	pt->duree_survie=-1;//infini
-	pt->taille=0;
-	pt->taille_du_bide=1;//taille corail
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
-	pt->metabolisme=-1;
-	pt->gestation=-1;
-	pt->frequence_reproduction=-1;
 	return *pt;
 }
 
@@ -139,11 +118,10 @@ obj getPyranha(int tour){
 	pt->type=6;
 	pt->mange[0]=3;
 	pt->mange[1]=4;
-	pt->mange[2]=10;
+	pt->mange[2]=14;
 	int k;
 	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"pyranha");
 	pt->dernier_repas=tour;
 	pt->satiete=5;
 	pt->derniere_reproduction=tour;
@@ -162,11 +140,10 @@ obj getRequin(int tour){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=7;
 	pt->mange[0]=3;
-	pt->mange[1]=10;
+	pt->mange[1]=14;
 	int k;
 	for (k=2;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"requin");
 	pt->dernier_repas=tour;
 	pt->satiete=10;
 	pt->derniere_reproduction=tour;
@@ -185,11 +162,10 @@ obj getOrque(int tour){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=8;
 	pt->mange[0]=7;
-	pt->mange[1]=10;
+	pt->mange[1]=14;
 	int k;
 	for (k=2;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"orque");
 	pt->dernier_repas=tour;
 	pt->satiete=10;
 	pt->derniere_reproduction=tour;
@@ -208,11 +184,11 @@ obj getBaleine(int tour){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=9;
 	pt->mange[0]=1;
-	pt->mange[1]=11;
+	pt->mange[1]=10;
+	pt->mange[2]=12;
 	int k;
-	for (k=2;k<6;k++)
+	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
-	strcpy(pt->name,"baleine");
 	pt->dernier_repas=tour;
 	pt->satiete=10;
 	pt->derniere_reproduction=tour;
@@ -227,72 +203,54 @@ obj getBaleine(int tour){
 	return *pt;
 }
 
-obj getPecheur(int tour){
+obj getPont(){
 	obj * pt=malloc(sizeof(obj));
-	char nom[20];
-	printf("Entrez votre nom :");
-	gets(nom);
-	strcpy(pt->name,nom);
 	pt->type=10;
+	return *pt;
+}
+
+obj getSol(){
+	obj * pt=malloc(sizeof(obj));
+	pt->type=11;
+	return *pt;
+}
+
+obj getPont_pecheur(){
+	obj * pt=malloc(sizeof(obj));
+	pt->type=12;
 	pt->mange[0]=3;
 	pt->mange[1]=4;
 	pt->mange[2]=6;
 	pt->mange[3]=7;
 	pt->mange[4]=8;
 	pt->mange[5]=9;
-	pt->dernier_repas=tour;
-	pt->satiete=10;
-	pt->derniere_reproduction=-1;//ne se reproduit pas
-	pt->duree_survie=3;
-	pt->taille=3;
-	pt->taille_du_bide=10;
-	pt->saut_max=1;
-	pt->dernier_deplacement=tour;
-	pt->metabolisme=0;
-	pt->gestation=-1;//ne se reproduit pas
-	pt->frequence_reproduction=-1;//ne se reproduit pas
+	pt->sac=0;//sac vide
 	return *pt;
 }
 
-obj getPont(){
+obj getSol_pecheur(){
 	obj * pt=malloc(sizeof(obj));
-	pt->type=11;
-	int k;
-	for (k=0;k<6;k++)
-		pt->mange[k]=-1;//ne mange personne
-	strcpy(pt->name,"pont");
-	pt->dernier_repas=-1;//pas défini
-	pt->satiete=-1;
-	pt->derniere_reproduction=-1;
-	pt->duree_survie=-1;//infini
-	pt->taille=2;
-	pt->taille_du_bide=-1;
-	pt->saut_max=-1;
-	pt->dernier_deplacement=-1;
-	pt->metabolisme=-1;
-	pt->gestation=-1;
-	pt->frequence_reproduction=-1;
+	pt->type=13;
+	pt->mange[0]=3;
+	pt->mange[1]=4;
+	pt->mange[2]=6;
+	pt->mange[3]=7;
+	pt->mange[4]=8;
+	pt->mange[5]=9;
+	pt->sac=0;//sac vide
 	return *pt;
 }
 
-obj getSol(){
+obj getEau_pecheur(){
 	obj * pt=malloc(sizeof(obj));
-	pt->type=12;
-	int k;
-	for (k=0;k<6;k++)
-		pt->mange[k]=-1;//ne mange personne
-	strcpy(pt->name,"sol");
-	pt->dernier_repas=-1;//pas défini
-	pt->satiete=-1;
-	pt->derniere_reproduction=-1;
-	pt->duree_survie=-1;//infini
-	pt->taille=-1;
-	pt->taille_du_bide=-1;
-	pt->saut_max=-1;
-	pt->dernier_deplacement=-1;
-	pt->metabolisme=-1;
-	pt->gestation=-1;
-	pt->frequence_reproduction=-1;
+	pt->type=14;
+	pt->mange[0]=3;
+	pt->mange[1]=4;
+	pt->mange[2]=6;
+	pt->mange[3]=7;
+	pt->mange[4]=8;
+	pt->mange[5]=9;
+	pt->sac=0;//sac vide
 	return *pt;
 }
 

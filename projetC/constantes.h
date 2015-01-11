@@ -13,11 +13,10 @@ obj getPyranha(int tour);//6
 obj getRequin(int tour);//7
 obj getOrque(int tour);//8
 obj getBaleine(int tour);//9
-obj getPecheur(int tour);//10
-obj getPont();//11
-obj getSol();//12
-/*
-obj getPontEtPecheur();//13
-obj getSolEtPecheur();//14
-*/
+obj getPont();//10
+obj getSol();//11
+obj getPont_pecheur();//12
+obj getSol_pecheur();//13
+obj getEau_pecheur();//14
+
 #endif

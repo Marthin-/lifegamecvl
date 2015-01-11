@@ -3,7 +3,6 @@
 
 typedef struct {
 	int type;//0:eau, 1:plancton, 2:corail, 3:bar...
-	char name[20];
 	int mange[6];
 	int dernier_repas;
 	int satiete;
@@ -16,6 +15,7 @@ typedef struct {
 	int metabolisme;
 	int gestation;
 	int frequence_reproduction;
+	int sac;
 }obj;
 
 #endif
