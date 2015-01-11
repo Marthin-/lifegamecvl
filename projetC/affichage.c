@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "affichage.h"
 
-#define esc 27
 void clearScreen (){
+	int esc=27;
         printf("%c[2J%c[H" , esc , esc);
 }
 
@@ -66,13 +66,13 @@ void afficher_bordure(SDL_Surface * ecran, int taille_bordure, int taille_bmp, i
         position.x=0;
         position.y=0;
 	int bord=2*taille_bordure+n*taille_bmp+(n-1)*taille_separation;
-	SDL_Surface *bordure_verticale=SDL_CreateRGBSurface(SDL_HWSURFACE, taille_bordure, bord, 32, 0, 0, 0, 0);
+	SDL_Surface *bordure_verticale=SDL_CreateRGBSurface(SDL_HWSURFACE, taille_bordure, 2*taille_bordure+n*taille_bmp+(n-1)*taille_separation, 32, 0, 0, 0, 0);
         SDL_FillRect(bordure_verticale, NULL, SDL_MapRGB(bordure_verticale->format, 0, 0, 0));
 	SDL_Surface *bordure_horizontale=SDL_CreateRGBSurface(SDL_HWSURFACE, bord, taille_bordure, 32, 0, 0, 0, 0);
         SDL_FillRect(bordure_horizontale, NULL, SDL_MapRGB(bordure_horizontale->format, 0, 0, 0));
 	SDL_BlitSurface(bordure_verticale, NULL, ecran, &position);
 	SDL_BlitSurface(bordure_horizontale, NULL, ecran, &position);
-	position.x=bord-2*taille_bordure;
+	position.x=bord-taille_bordure;
 	SDL_BlitSurface(bordure_verticale, NULL, ecran, &position);
         position.y=position.x;
         position.x=0;
@@ -91,13 +91,13 @@ void afficher_separation(SDL_Surface * ecran, int taille_bordure, int taille_bmp
 	int k;
 	for (k=0;k<n-1;k++){
 		SDL_BlitSurface(separation_verticale, NULL, ecran, &position);
-		position.x+=taille_bmp;
+		position.x+=taille_bmp+taille_separation;
 	}
 	position.x=taille_bordure;
 	position.y=taille_bordure+taille_bmp;
 	for (k=0;k<n-1;k++){
 		SDL_BlitSurface(separation_horizontale, NULL, ecran, &position);
-                position.y+=taille_bmp;
+                position.y+=taille_bmp+taille_separation;
 	}
 }
 
@@ -106,16 +106,30 @@ void afficher_grille(SDL_Surface * ecran, int taille_bordure, int taille_bmp, in
 	afficher_separation(ecran, taille_bordure, taille_bmp, taille_separation, n);
 }
 
-void remplir_grillej(){
-/*	int k;
+void remplir_grillej(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	SDL_Surface * eau=SDL_LoadBMP("./img/eau.bmp");
+	SDL_Surface * ombre=SDL_LoadBMP("./img/ombre.bmp");
+	SDL_Rect position;
+	position.x=taille_bordure;
+	position.y=taille_bordure;
+	int bord=taille_bordure+n*taille_bmp+n*taille_separation;
+	int k;
 	for (k=0;k<n*n;k++){
-		
-	}*/
+		if ((tab+k)->type==0)
+			SDL_BlitSurface(eau, NULL, ecran, &position);
+		else
+			SDL_BlitSurface(ombre, NULL, ecran, &position);
+		position.x+=taille_bmp+taille_separation;
+		if (position.x==bord){
+			position.x=taille_bordure;
+			position.y+=taille_bmp+taille_separation;
+		}
+	}
 }
 
 void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation){
 	afficher_grille(ecran, taille_bordure, taille_bmp, taille_separation, n);
-	remplir_grillej();
+	remplir_grillej(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
 }
 
 void choixPecheur(){
@@ -154,7 +168,7 @@ void printsdl(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_
 	int continuer=1;
 	while (continuer){
 		SDL_Flip(ecran);
-                SDL_WaitEvent(&event);
+                SDL_PollEvent(&event);
                 if (event.type==SDL_QUIT){
                         continuer=0;
 			*tour=tourMax;
