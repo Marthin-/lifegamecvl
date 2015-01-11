@@ -231,7 +231,6 @@ obj getPecheur(int tour){
 	obj * pt=malloc(sizeof(obj));
 	char nom[20];
 	printf("Entrez votre nom :");
-	gets(nom);//vide le buffer
 	gets(nom);
 	strcpy(pt->name,nom);
 	pt->type=10;

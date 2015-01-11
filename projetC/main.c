@@ -6,7 +6,7 @@
 #include "obj.h"
 #include "regles_de_vie.h"
 #include "remplir.h"
-//#include "./usr/include/SDL/SDL.h"
+#include "./usr/include/SDL/SDL.h"
 
 int main(int argc, char **argv){
 	int tourMax;
@@ -18,7 +18,7 @@ int main(int argc, char **argv){
 		printf("Combien de tours voulez-vous ?\n");
 		scanf("%i", &tourMax);
 	}
-	int n=60;
+	int n=50;
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
 	int nbj=0;//nombre de joueurs
@@ -30,33 +30,39 @@ int main(int argc, char **argv){
 	int * death=calloc(9, sizeof(int));
 	int * deathDate=calloc(9, sizeof(int));
 	int deathLength=0;
-/*
+
 //------------------------------------------------------------------
 	SDL_Init(SDL_INIT_VIDEO);
 //        SDL_WM_SetIcon(SDL_LoadBMP("ico.bmp"), NULL);
-	int taille_bmp=48;
+	int taille_bmp=16;
 	int taille_bordure=3;
 	int taille_separation=1;
-	int larg=100;//largeur de la colone de droite
-	int haut=50;
-        SDL_Surface *ecran=SDL_SetVideoMode(taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+larg, taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+haut, 32, SDL_HWSURFACE);
+	int larg=100;//largeur de la colonne de droite
+	int haut=50;//hautaur de la colonne du bas
+	int width=taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+larg;
+	int height=taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+haut;
+//	printf("width : %i\nheight : %i\n", width, height);//pixels
+        SDL_Surface *ecran=SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE);
         SDL_WM_SetCaption("Jeu de la vie", NULL);
         SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));  
-//	SDL_Flip(ecran);
+	SDL_Flip(ecran);
+	int isDev=0;//est développeur : détermine le type d'affichage (joueur ou développeur)
 //--------------------------------------------------------------------
-*/
+
 	int tour;
 	for (tour=0;tour<tourMax;tour++){
 		survie(tab, n, tour);
 		checkDeath(tab, n, tour, death, &deathLength, deathDate);
-		afficher(tab, n, tour);
-		getchar();
+		printsdl(ecran, tab, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
+//		afficher(tab, n, tour);
+//		getchar();
 		reproduction(tab, n, tour);
 		predation(tab, n, tour);
 		deplacement(tab, n, tour);
 		augTour(tab, n);
 	}
-	afficher(tab, n, tour);
+//	afficher(tab, n, tour);
+	SDL_Quit();
 	deathHistory(death, deathLength, deathDate);
 	free(death);
 	free(tab);
