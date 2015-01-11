@@ -21,7 +21,7 @@ int main(int argc, char **argv){
 	int n=50;
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
-	int nbj=0;//nombre de joueurs
+	int nbj=1;//nombre de joueurs
 /*	while (nbj<1 || nbj>4){
 		printf("combien de joueurs (max. 4) ?\n");
 		scanf("%i",&nbj);

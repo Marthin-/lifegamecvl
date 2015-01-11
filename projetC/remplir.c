@@ -7,7 +7,9 @@ void remplir(obj *tab, int n, int nbj){
 	int k;
 	int pourcentage[9]={30,45,55,60,65,70,77,84,91};
 	int check=1;
-	for (k=0;k<8;k++){
+	if (pourcentage[0]<0 || pourcentage[8]>100)
+		check=0;
+	for (k=0;k<8 && check;k++){
 		if (pourcentage[k]>pourcentage[k+1])
 			check=0;
 	}
@@ -16,7 +18,7 @@ void remplir(obj *tab, int n, int nbj){
 			int aleat=rand()%100;
 			obj inc;
 			if (nbj && k%n==0){
-				inc=getPecheur(0);
+				inc=getSol_pecheur();
 				nbj--;
 			}
 			else if (k%n==0 || k%n==n-1)

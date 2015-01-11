@@ -12,7 +12,7 @@ void killObj(obj *tab, int place){
 void survie(obj *tab, int n, int tour){
 	int k;
 	for (k=0;k<n*n;k++){
-		if ((tab+k)->satiete!=-1 && (tab+k)->dernier_repas!=-1 && (tab+k)->duree_survie!=-1){
+		if ((tab+k)->type>1 && (tab+k)->type<10 && (tab+k)->type!=5){
 			if ((tab+k)->satiete==0 && tour-((tab+k)->dernier_repas)>((tab+k)->duree_survie)){
 				//printf("Type %i est mort en %i\n", (tab+k)->type, k);
 				killObj(tab, k);
@@ -21,18 +21,49 @@ void survie(obj *tab, int n, int tour){
 	}
 }
 
-int apte(obj *tab, int place, int tour){
-	int can=0;//ne peut pas se reproduire
-	if ((tab+place)->frequence_reproduction!=-1){
-		if ((tab+place)->derniere_reproduction+(tab+place)->frequence_reproduction<=tour){
-			can=1;//peut se reproduire
-			if ((tab+place)->type!=1){
-				if ((tab+place)->satiete<(tab+place)->gestation*(tab+place)->metabolisme)
-					can=0;
-			}
-		}
+obj getSameType(obj oldObj, int tour){
+	obj inc;
+	int mys=oldObj.type;
+	if (mys==1)
+		inc=getPlancton(tour);
+	else if (mys==2)
+		inc=getCorail(tour);
+	else if (mys==3)
+		inc=getBar(tour);
+	else if (mys==4)
+		inc=getThon(tour);
+	else if (mys==5)
+		inc=getPollution(tour);
+	else if (mys==6)
+		inc=getPyranha(tour);
+	else if (mys==7)
+		inc=getRequin(tour);
+	else if (mys==8)
+		inc=getOrque(tour);
+	else if (mys==9)
+		inc=getBaleine(tour);
+	else if (mys==10)
+		inc=getPont();
+	else if (mys==11)
+		inc=getSol();
+	else if (mys==12)
+		inc=getPont_pecheur();
+	else if (mys==13)
+		inc=getSol_pecheur();
+	else if (mys==14)
+		inc=getEau_pecheur();
+	else
+		inc=getEau();
+	return inc;
+}
+
+void reproduction_plancton(obj * tab, int pos, int n, int tour){
+	int is=isPresent(tab, pos, n, 0);
+	if (is){
+		int nvPlace=returnPlace(is, pos, n);
+		//printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
+		*(tab+nvPlace)=getPlancton(tour);
 	}
-	return can;
 }
 
 int isPresent(obj *tab, int place, int n, int nbType){//retourne les positions du type recherché en base 2
@@ -68,17 +99,17 @@ int deplDir(int pos, int dir, int n){//se déplacer à partir de la position pos
 	else if (dir==2)
 		nvpos=pos-n;
 	else if (dir==4)
-                nvpos=pos-n+1;
+		nvpos=pos-n+1;
 	else if (dir==8)
-                nvpos=pos-1;
+		nvpos=pos-1;
 	else if (dir==16)
-                nvpos=pos+1;
+		nvpos=pos+1;
 	else if (dir==32)
-                nvpos=pos+n-1;
+		nvpos=pos+n-1;
 	else if (dir==64)
-                nvpos=pos+n;
+		nvpos=pos+n;
 	else if (dir==128)
-                nvpos=pos+n+1;
+		nvpos=pos+n+1;
 	return nvpos;
 }
 
@@ -110,78 +141,67 @@ int returnPlace(int is, int place, int n){//retourne une place aléatoire après
 	return nvPlace;
 }
 
-obj getSameType(obj oldObj, int tour){
-	obj inc;
-	int mys=oldObj.type;
-	if (mys==0)
-		inc=getEau();
-	else if (mys==1)
-		inc=getPlancton(tour);
-	else if (mys==2)
-		inc=getCorail(tour);
-	else if (mys==3)
-		inc=getBar(tour);
-	else if (mys==4)
-		inc=getThon(tour);
-	else if (mys==5)
-		inc=getPollution(tour);
-	else if (mys==6)
-		inc=getPyranha(tour);
-	else if (mys==7)
-		inc=getRequin(tour);
-	else if (mys==8)
-		inc=getOrque(tour);
-	else if (mys==9)
-		inc=getBaleine(tour);
-	else if (mys==10)
-		inc=getPecheur(tour);
-	else
-		inc=getPont();
-	return inc;
-}
-
 void reproduction(obj *tab, int n, int tour){
 	int k;
 	for (k=0;k<n*n;k++){
-		if (apte(tab, k, tour)){
-			int is=isPresent(tab, k, n, 0);
-			if (is!=0){
-				int nvPlace=returnPlace(is, k, n);
-//				printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
-				(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
-				*(tab+nvPlace)=getSameType(*(tab+k), tour);
+		if ((tab+k)->type>0 && (tab+k)->type<10 && (tab+k)->type!=5){
+			if ((tab+k)->type==1)
+				reproduction_plancton(tab, k, n, tour);
+			else if ((tab+k)->satiete>=(tab+k)->gestation*(tab+k)->metabolisme && (tab+k)->derniere_reproduction+(tab+k)->frequence_reproduction<=tour){
+				int is=isPresent(tab, k, n, 0);
+				if (is){
+					int nvPlace=returnPlace(is, k, n);
+					//printf("Type %i en %i s'est reproduit en %i\n", (tab+k)->type, k, nvPlace);
+					(tab+k)->satiete -= (tab+k)->gestation*(tab+k)->metabolisme;
+					*(tab+nvPlace)=getSameType(*(tab+k), tour);
+				}
 			}
 		}
 	}
 }
 
+void predation_pollution(obj * tab, int pos, int n, int tour){
+	if ((tab+pos)->dernier_repas<tour){
+		int proie=isPresent(tab, pos, n, 2);
+		if (proie){
+			proie=returnPlace(proie, pos, n);
+			(tab+pos)->dernier_repas=tour;
+			//printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
+			*(tab+proie)=*(tab+pos);
+			*(tab+pos)=getEau();
+		}
+	}
+
+}
+
 void predation(obj *tab, int n, int tour){
 	int k;
 	for (k=0;k<n*n;k++){
-		int i=0;
-		while (i<6 && (tab+k)->mange[i]!=-1){
-			if ((tab+k)->dernier_repas<tour){
-				int proie=isPresent(tab, k, n, (tab+k)->mange[i]);
-				if (proie!=0){
-					proie=returnPlace(proie, k, n);
-					if ((tab+proie)->taille+(tab+k)->satiete<=(tab+k)->taille_du_bide){
-						(tab+k)->dernier_repas=tour;
-						if ((tab+k)->type!=5)
-							(tab+k)->satiete+=(tab+proie)->taille;
-//						printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
-						/*if ((tab+k)->type==2)
-							*(tab+proie)=getEau();
-						else{*/
-							*(tab+proie)=*(tab+k);
-							*(tab+k)=getEau();
-						//}
-						i=6;
+		if ((tab+k)->type>1 && (tab+k)->type<10){// && (tab+k)->type!=5){
+			if ((tab+k)->type==5)
+				predation_pollution(tab, k, n, tour);
+			else {
+				int i=0;
+				while (i<6 && (tab+k)->mange[i]!=-1){
+					if ((tab+k)->dernier_repas<tour){
+						int proie=isPresent(tab, k, n, (tab+k)->mange[i]);
+						if (proie){
+							proie=returnPlace(proie, k, n);
+							if ((tab+proie)->taille+(tab+k)->satiete<=(tab+k)->taille_du_bide){
+								(tab+k)->dernier_repas=tour;
+								(tab+k)->satiete+=(tab+proie)->taille;
+								//printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
+								*(tab+proie)=*(tab+k);
+								*(tab+k)=getEau();
+								i=6;
+							}
+						}
 					}
+					else
+						i=6;
+					i++;
 				}
 			}
-			else
-				i=6;
-			i++;
 		}
 	}
 }
@@ -229,21 +249,37 @@ int continuerDir(obj * tab, int pos, int nvpos, int dir, int n){
 	return next;
 }
 
+void deplacement_pollution(obj * tab, int pos, int n, int tour){
+	if ((tab+pos)->dernier_deplacement!=tour){
+		int is=isPresent(tab, pos, n, 0);
+		if (is){
+			int nvpos=returnPlace(is, pos, n);
+			//printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, fin);
+			(tab+pos)->dernier_deplacement=tour;
+			*(tab+nvpos)=*(tab+pos);
+			*(tab+pos)=getEau();
+		}
+	}	
+}
+
 void deplacement(obj *tab, int n, int tour){
 	int k;
 	for (k=0;k<n*n;k++){
-		if ((tab+k)->saut_max>0 && ((tab+k)->satiete>0 || (tab+k)->type==5) && (tab+k)->dernier_deplacement!=tour){
-			int is=isPresent(tab, k, n, 0);
-			if (is){
-				int nvpos=returnPlace(is, k, n);
-				if ((tab+k)->type!=5)
+		if ((tab+k)->type>2 && (tab+k)->type<10){
+			if ((tab+k)->type==5)
+				deplacement_pollution(tab, k, n, tour);
+			else if ((tab+k)->satiete>0 && (tab+k)->dernier_deplacement!=tour){
+				int is=isPresent(tab, k, n, 0);
+				if (is){
+					int nvpos=returnPlace(is, k, n);
 					(tab+k)->satiete--;
-				int dir=getDirection(k, nvpos, n);
-				int fin=continuerDir(tab, k, nvpos, dir, n);
-//				printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, fin);
-				(tab+k)->dernier_deplacement=tour;
-                                *(tab+fin)=*(tab+k);
-                                *(tab+k)=getEau();
+					int dir=getDirection(k, nvpos, n);
+					int fin=continuerDir(tab, k, nvpos, dir, n);
+					//printf("Type %i en %i bouge en %i\n", (tab+k)->type, k, fin);
+					(tab+k)->dernier_deplacement=tour;
+					*(tab+fin)=*(tab+k);
+					*(tab+k)=getEau();
+				}
 			}
 		}
 	}
@@ -252,7 +288,7 @@ void deplacement(obj *tab, int n, int tour){
 void augTour(obj *tab, int n){
 	int k;
 	for (k=0;k<n*n;k++){
-		if ((tab+k)->satiete!=-1 && (tab+k)->metabolisme!=-1)
+		if ((tab+k)->type>1 && (tab+k)->type<10 && (tab+k)->type!=5)
 			(tab+k)->satiete=max((tab+k)->satiete-(tab+k)->metabolisme, 0);
 	}
 }

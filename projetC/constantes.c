@@ -6,21 +6,6 @@
 obj getEau(){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=0;
-	int k;
-	for (k=0;k<6;k++)
-		pt->mange[k]=-1;//ne mange personne
-	strcpy(pt->name,"eau");
-	pt->dernier_repas=-1;//pas défini
-	pt->satiete=-1;
-	pt->derniere_reproduction=-1;
-	pt->duree_survie=-1;
-	pt->taille=-1;
-	pt->taille_du_bide=-1;
-	pt->saut_max=-1;
-	pt->dernier_deplacement=-1;
-	pt->metabolisme=-1;
-	pt->gestation=-1;
-	pt->frequence_reproduction=-1;
 	return *pt;
 }
 

@@ -32,11 +32,15 @@ void afficher(obj *tab, int n, int tour){
 		else if ((tab+k)->type==9)
 			sym='B';
 		else if ((tab+k)->type==10)
-			sym='@';
-		else if ((tab+k)->type==11)
 			sym='H';
-		else if ((tab+k)->type==12)
+		else if ((tab+k)->type==11)
 			sym='X';
+		else if ((tab+k)->type==12)
+			sym='@';
+		else if ((tab+k)->type==13)
+			sym='@';
+		else if ((tab+k)->type==14)
+			sym='@';
 		else
 			sym='?';//erreur
                 printf("%c ", sym);
@@ -52,7 +56,7 @@ void afficher2(obj *tab, int n, int tour){
         int k;
 	clearScreen();
         for (k=0;k<n*n;k++){
-                printf("%i ", (tab+k)->type);
+                printf("%i ", (tab+k)->type+70);
 		if (k==n*n-1)
 			printf("  Tour %i", tour);
                 if (k%n==n-1)
@@ -109,6 +113,10 @@ void afficher_grille(SDL_Surface * ecran, int taille_bordure, int taille_bmp, in
 void remplir_grillej(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation){
 	SDL_Surface * eau=SDL_LoadBMP("./img/eau.bmp");
 	SDL_Surface * ombre=SDL_LoadBMP("./img/ombre.bmp");
+	SDL_Surface * pont=SDL_LoadBMP("./img/pont.bmp");
+	SDL_Surface * sol=SDL_LoadBMP("./img/sol.bmp");
+	SDL_Surface * pont_pecheur=SDL_LoadBMP("./img/pont_pecheur.bmp");
+	SDL_Surface * sol_pecheur=SDL_LoadBMP("./img/sol_pecheur.bmp");
 	SDL_Rect position;
 	position.x=taille_bordure;
 	position.y=taille_bordure;
@@ -117,6 +125,14 @@ void remplir_grillej(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int 
 	for (k=0;k<n*n;k++){
 		if ((tab+k)->type==0)
 			SDL_BlitSurface(eau, NULL, ecran, &position);
+		else if ((tab+k)->type==10)
+			SDL_BlitSurface(pont, NULL, ecran, &position);
+		else if ((tab+k)->type==11)
+			SDL_BlitSurface(sol, NULL, ecran, &position);
+		else if ((tab+k)->type==12)
+			SDL_BlitSurface(pont_pecheur, NULL, ecran, &position);
+		else if ((tab+k)->type==13)
+			SDL_BlitSurface(sol_pecheur, NULL, ecran, &position);
 		else
 			SDL_BlitSurface(ombre, NULL, ecran, &position);
 		position.x+=taille_bmp+taille_separation;
@@ -150,7 +166,7 @@ void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
         remplir_grilled();
 }
 
-void printNb(){
+void printNb(){//affiche le nombre d'animaux par especes
 
 }
 
