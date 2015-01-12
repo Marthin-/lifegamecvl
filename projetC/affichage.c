@@ -222,13 +222,40 @@ void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
         remplir_grilled(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
 }
 
-void printNb(){//affiche le nombre d'animaux par especes
+void afficher_nombres_texte(){
+	
+}
 
+void printNb(obj * tab, int n){//affiche le nombre d'animaux par especes
+	int * nb=calloc(9,sizeof(int));
+	int k;
+	for (k=0;k<n*n;k++){
+		if ((tab+k)->type==1)
+			*nb+=1;
+		else if ((tab+k)->type==2)
+			*(nb+1)+=1;
+		else if ((tab+k)->type==3)
+			*(nb+2)+=1;
+		else if ((tab+k)->type==4)
+			*(nb+3)+=1;
+		else if ((tab+k)->type==5)
+			*(nb+4)+=1;
+		else if ((tab+k)->type==6)
+			*(nb+5)+=1;
+		else if ((tab+k)->type==7)
+			*(nb+6)+=1;
+		else if ((tab+k)->type==8)
+			*(nb+7)+=1;
+		else if ((tab+k)->type==9)
+			*(nb+8)+=1;
+	}
+	afficher_nombres_texte();
+	free(nb);
 }
 
 void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int tour){
 	printMapd(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
-	printNb();
+	printNb(tab, n);
 }
 
 void printsdl(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev){
