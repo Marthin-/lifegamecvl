@@ -17,7 +17,7 @@ void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
 void choixPecheur();
 void printj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-void remplir_grilled();
+void remplir_grilled(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
 void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
 void printNb();
 void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int tour);

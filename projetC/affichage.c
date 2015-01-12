@@ -157,13 +157,69 @@ void printj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bo
 	choixPecheur();
 }
 
-void remplir_grilled(){
-
+void remplir_grilled(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	SDL_Surface * eau=SDL_LoadBMP("./img/eau.bmp");
+	SDL_Surface * plancton=SDL_LoadBMP("./img/plancton.bmp");
+	SDL_Surface * corail=SDL_LoadBMP("./img/corail.bmp");
+	SDL_Surface * bar=SDL_LoadBMP("./img/bar.bmp");
+	SDL_Surface * thon=SDL_LoadBMP("./img/thon.bmp");
+	SDL_Surface * pollution=SDL_LoadBMP("./img/pollution.bmp");
+	SDL_Surface * pyranha=SDL_LoadBMP("./img/pyranha.bmp");
+	SDL_Surface * requin=SDL_LoadBMP("./img/requin.bmp");
+	SDL_Surface * orque=SDL_LoadBMP("./img/orque.bmp");
+	SDL_Surface * baleine=SDL_LoadBMP("./img/baleine.bmp");
+	SDL_Surface * pont=SDL_LoadBMP("./img/pont.bmp");
+	SDL_Surface * sol=SDL_LoadBMP("./img/sol.bmp");
+	SDL_Surface * pont_pecheur=SDL_LoadBMP("./img/pont_pecheur.bmp");
+	SDL_Surface * sol_pecheur=SDL_LoadBMP("./img/sol_pecheur.bmp");
+	SDL_Surface * ombre=SDL_LoadBMP("./img/ombre.bmp");
+	SDL_Rect position;
+	position.x=taille_bordure;
+	position.y=taille_bordure;
+	int bord=taille_bordure+n*taille_bmp+n*taille_separation;
+	int k;
+	for (k=0;k<n*n;k++){
+		if ((tab+k)->type==0)
+			SDL_BlitSurface(eau, NULL, ecran, &position);
+		else if ((tab+k)->type==1)
+			SDL_BlitSurface(plancton, NULL, ecran, &position);
+		else if ((tab+k)->type==2)
+			SDL_BlitSurface(corail, NULL, ecran, &position);
+		else if ((tab+k)->type==3)
+			SDL_BlitSurface(bar, NULL, ecran, &position);
+		else if ((tab+k)->type==4)
+			SDL_BlitSurface(thon, NULL, ecran, &position);
+		else if ((tab+k)->type==5)
+			SDL_BlitSurface(pollution, NULL, ecran, &position);
+		else if ((tab+k)->type==6)
+			SDL_BlitSurface(pyranha, NULL, ecran, &position);
+		else if ((tab+k)->type==7)
+			SDL_BlitSurface(requin, NULL, ecran, &position);
+		else if ((tab+k)->type==8)
+			SDL_BlitSurface(orque, NULL, ecran, &position);
+		else if ((tab+k)->type==9)
+			SDL_BlitSurface(baleine, NULL, ecran, &position);
+		else if ((tab+k)->type==10)
+			SDL_BlitSurface(pont, NULL, ecran, &position);
+		else if ((tab+k)->type==11)
+			SDL_BlitSurface(sol, NULL, ecran, &position);
+		else if ((tab+k)->type==12)
+			SDL_BlitSurface(pont_pecheur, NULL, ecran, &position);
+		else if ((tab+k)->type==13)
+			SDL_BlitSurface(sol_pecheur, NULL, ecran, &position);
+		else
+			SDL_BlitSurface(ombre, NULL, ecran, &position);
+		position.x+=taille_bmp+taille_separation;
+		if (position.x==bord){
+			position.x=taille_bordure;
+			position.y+=taille_bmp+taille_separation;
+		}
+	}
 }
 
 void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation){
         afficher_grille(ecran, taille_bordure, taille_bmp, taille_separation, n);
-        remplir_grilled();
+        remplir_grilled(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
 }
 
 void printNb(){//affiche le nombre d'animaux par especes
@@ -180,10 +236,10 @@ void printsdl(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_
 		printj(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);//afficher l'écran du joueur
 	else
 		printd(ecran, tab, n, taille_bmp, taille_bordure, taille_separation, *tour);//afficher l'écran du développeur
+	SDL_Flip(ecran);
 	SDL_Event event;
 	int continuer=1;
 	while (continuer){
-		SDL_Flip(ecran);
                 SDL_PollEvent(&event);
                 if (event.type==SDL_QUIT){
                         continuer=0;
@@ -191,41 +247,14 @@ void printsdl(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_
 		}
                 else if (event.type==SDL_KEYDOWN){
 			if (*isDev==0){//joueur
-				if (event.key.keysym.sym==SDLK_d){
-					while (continuer){
-						SDL_WaitEvent(&event);
-						if (event.type==SDL_QUIT){
-							continuer=0;
-							*tour=tourMax;
-						}
-						else if (event.type==SDL_KEYDOWN){
-							if (event.key.keysym.sym==SDLK_e){
-								while (continuer){
-									SDL_WaitEvent(&event);
-									if (event.type==SDL_QUIT){
-										continuer=0;
-										*tour=tourMax;
-									}
-									else if (event.type==SDL_KEYDOWN){
-										if (event.key.keysym.sym==SDLK_v)
-											*isDev=1;
-										continuer=0;
-									}
-								}
-							}
-							else
-								continuer=0;
-						}
-					}
-				}
-				else
-					continuer=0;
+				if (event.key.keysym.sym==SDLK_d)
+					*isDev=1;
 			}
 			else {//développeur
 				if (event.key.keysym.sym==SDLK_j)
 					*isDev=0;
-				continuer=0;
 			}
+			continuer=0;
 		}
 	}
 }
