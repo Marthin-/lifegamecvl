@@ -9,6 +9,12 @@
 #include "./usr/include/SDL/SDL.h"
 
 int main(int argc, char **argv){
+	int n=50;
+	int posPecheur=0;
+	int * adrpos=&posPecheur;
+	int dir=16;
+	int * adrdir=&dir;
+	int taille_canne=3;
 	int tourMax;
 	if (argc==2){
 		char *endptr;
@@ -18,7 +24,6 @@ int main(int argc, char **argv){
 		printf("Combien de tours voulez-vous ?\n");
 		scanf("%i", &tourMax);
 	}
-	int n=50;
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
 	int nbj=1;//nombre de joueurs
@@ -53,7 +58,7 @@ int main(int argc, char **argv){
 	for (tour=0;tour<tourMax;tour++){
 		survie(tab, n, tour);
 		checkDeath(tab, n, tour, death, &deathLength, deathDate);
-		printsdl(ecran, tab, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
+		printsdl(ecran, tab, adrpos, adrdir, taille_canne, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
 //		afficher(tab, n, tour);
 //		getchar();
 		reproduction(tab, n, tour);

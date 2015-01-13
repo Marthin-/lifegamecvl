@@ -113,7 +113,7 @@ int deplDir(int pos, int dir, int n){//se déplacer à partir de la position pos
 	return nvpos;
 }
 
-int returnPlace(int is, int place, int n){//retourne une place aléatoire après la fonction isPresent2
+int returnPlace(int is, int place, int n){//retourne une place aléatoire après la fonction isPresent
 	int nbcase=0;
 	int bin=is;
 	int k;
