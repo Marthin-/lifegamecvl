@@ -36,7 +36,7 @@ int main(int argc, char **argv){
 //        SDL_WM_SetIcon(SDL_LoadBMP("ico.bmp"), NULL);
 	int taille_bmp=16;
 	int taille_bordure=3;
-	int taille_separation=1;
+	int taille_separation=0;
 	int larg=100;//largeur de la colonne de droite
 	int haut=50;//hautaur de la colonne du bas
 	int width=taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+larg;

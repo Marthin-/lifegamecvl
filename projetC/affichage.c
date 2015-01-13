@@ -148,8 +148,17 @@ void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
 	remplir_grillej(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
 }
 
-void choixPecheur(){
+void afficherChoix(){
 
+}
+
+void demanderAction(){
+
+}
+
+void choixPecheur(){
+	afficherChoix();
+	demanderAction();
 }
 
 void printj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation){

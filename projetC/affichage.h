@@ -14,6 +14,8 @@ void afficher_grille(SDL_Surface * ecran, int taille_bordure, int taille_bmp, in
 
 void remplir_grillej(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
 void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
+void afficherChoix();
+void demanderAction();
 void choixPecheur();
 void printj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
