@@ -11,9 +11,7 @@
 int main(int argc, char **argv){
 	int n=50;
 	int posPecheur=0;
-	int * adrpos=&posPecheur;
-	int dir=16;
-	int * adrdir=&dir;
+	int dirPecheur=16;
 	int taille_canne=3;
 	int tourMax;
 	if (argc==2){
@@ -58,7 +56,7 @@ int main(int argc, char **argv){
 	for (tour=0;tour<tourMax;tour++){
 		survie(tab, n, tour);
 		checkDeath(tab, n, tour, death, &deathLength, deathDate);
-		printsdl(ecran, tab, adrpos, adrdir, taille_canne, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
+		printsdl(ecran, tab, &posPecheur, &dirPecheur, taille_canne, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
 //		afficher(tab, n, tour);
 //		getchar();
 		reproduction(tab, n, tour);

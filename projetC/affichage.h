@@ -20,9 +20,9 @@ void afficher_grille(SDL_Surface * ecran, int taille_bordure, int taille_bmp, in
 
 //------------------------------------------------------
 
-void remplir_grillej(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
+void remplir_grillej(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int dirPecheur);
 
-void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
+void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int dirPecheur);
 
 //------------------------------------------------------
 
@@ -31,6 +31,8 @@ void blit(SDL_Surface * ecran, SDL_Surface * img, int pos, int n, int taille_bmp
 void seeDir(SDL_Surface * ecran, obj * tab, int posPecheur, int * dirPecheur, int dirtosee, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 int moveDir(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int dirtomove, int n, int taille_bmp, int taille_bordure, int taille_separation);
+
+//-------------------------------------------------
 
 void afficher_poisson(obj * tab, int place);
 
@@ -41,8 +43,14 @@ void afficherDest(int cible);
 int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int * dirPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 int filet();
-int construire();
+
+int commencer_construction(obj * tab, int posPecheur, int cible);
+
+int construire(SDL_Surface * ecran, obj * tab, int posPecheur, int * dirPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax);
+
 int lancer();
+
+//----------------------------------------------
 
 int moveUp(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation);
 int moveLeft(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation);
