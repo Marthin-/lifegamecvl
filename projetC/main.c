@@ -40,14 +40,14 @@ int main(int argc, char **argv){
 	int taille_bmp=16;
 	int taille_bordure=3;
 	int taille_separation=0;
-	int larg=100;//largeur de la colonne de droite
-	int haut=50;//hautaur de la colonne du bas
+	int larg=400;//largeur de la colonne de droite
+	int haut=0;//hautaur de la colonne du bas
 	int width=taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+larg;
 	int height=taille_bmp*n+(n-1)*taille_separation+2*taille_bordure+haut;
 //	printf("width : %i\nheight : %i\n", width, height);//pixels
         SDL_Surface *ecran=SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE);
         SDL_WM_SetCaption("Jeu de la vie", NULL);
-        SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));  
+        SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 50, 50, 255));  
 	SDL_Flip(ecran);
 	int isDev=0;//est développeur : détermine le type d'affichage (joueur ou développeur)
 //--------------------------------------------------------------------
