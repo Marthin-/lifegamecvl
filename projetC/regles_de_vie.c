@@ -113,6 +113,18 @@ int deplDir(int pos, int dir, int n){//se déplacer à partir de la position pos
 	return nvpos;
 }
 
+int getPos(int pos, int dir, int distance, int n){//retourne la case a une certaine distance de la position pos et dans la direction dir
+        int place=pos;
+        int k;
+        for (k=0;k<distance;k++){
+                if (((place<n || place%n==0) && dir==1) || (place<n && dir==2) || ((place<n || place%n==n-1) && dir==4) || (place%n==0 && dir==8) || (place%n==n-1 && dir==16) || ((place%n==0 || place>=n*n-n) && dir==32) || (place>=n*n-n && dir==64) || ((place%n==n-1 || place>=n*n-n) && dir==128))
+                        k=distance;
+                else
+                        place=deplDir(place, dir, n);
+        }
+        return place;
+}
+
 int returnPlace(int is, int place, int n){//retourne une place aléatoire après la fonction isPresent
 	int nbcase=0;
 	int bin=is;

@@ -9,6 +9,7 @@ obj getSameType(obj inc, int tour);
 void reproduction_plancton(obj * tab, int pos, int n, int tour);
 int isPresent(obj *tab, int place, int n, int nbType);
 int deplDir(int pos, int dir, int n);
+int getPos(int pos, int dir, int distance, int n);
 int returnPlace(int is, int place, int n);
 void reproduction(obj *tab, int n, int tour);
 
