@@ -28,17 +28,23 @@ void printMapj(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
 
 void blit(SDL_Surface * ecran, SDL_Surface * img, int pos, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
+void erase(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
+
 void seeDir(SDL_Surface * ecran, obj * tab, int posPecheur, int * dirPecheur, int dirtosee, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 int moveDir(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int dirtomove, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 //-------------------------------------------------
 
-void afficher_poisson(obj * tab, int place);
+void afficher_donnees(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_bmp, int taille_bordure, int taille_separation, int n);
+
+void aff_poisson_peche(obj * tab, int place);
 
 void commencer_peche(obj * tab, int posPecheur, int cible);
 
-void afficherDest(int cible);
+void cibler(int cible);
+
+void aff_menu_peche(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
 
 int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int * dirPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
@@ -57,13 +63,13 @@ int moveLeft(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur,
 int moveRight(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation);
 int moveDown(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
+//-----------------------------------------------
+
+void afficherChoix(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
+
 void demanderAction(SDL_Surface * ecran, obj * tab, int * pos, int * dir, int taille_canne, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-void afficherChoix();
-
 void choixPecheur(SDL_Surface * ecran, obj * tab, int * pos, int * dir, int taille_canne, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
-
-void afficher_donnees(obj * tab, int pos);
 
 void printj(SDL_Surface * ecran, obj * tab, int * posPecheur, int * dirPecheur, int taille_canne, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev);
 
