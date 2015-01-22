@@ -551,8 +551,11 @@ void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
         remplir_grilled(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
 }
 
-void afficher_nombres_texte(){
-	
+void afficher_nombres_texte(int * nb){
+	int k;
+	for (k=0;k<9;k++)
+		printf("%i:%i|", k+1, *(nb+k));
+	printf("\n");
 }
 
 void printNb(obj * tab, int n){//affiche le nombre d'animaux par especes
@@ -578,7 +581,7 @@ void printNb(obj * tab, int n){//affiche le nombre d'animaux par especes
 		else if ((tab+k)->type==9)
 			*(nb+8)+=1;
 	}
-	afficher_nombres_texte();
+	afficher_nombres_texte(nb);
 	free(nb);
 }
 

@@ -73,7 +73,7 @@ void remplir_grilled(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int 
 
 void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-void afficher_nombres_texte();
+void afficher_nombres_texte(int * nb);
 void printNb(obj * tab, int n);
 
 void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int tour);
