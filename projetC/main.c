@@ -47,7 +47,7 @@ int main(int argc, char **argv){
 //	printf("width : %i\nheight : %i\n", width, height);//pixels
         SDL_Surface *ecran=SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE);
         SDL_WM_SetCaption("Jeu de la vie", NULL);
-        SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 50, 50, 255));  
+        SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 60, 160, 208));  
 	SDL_Flip(ecran);
 	int isDev=0;//est développeur : détermine le type d'affichage (joueur ou développeur)
 //--------------------------------------------------------------------
