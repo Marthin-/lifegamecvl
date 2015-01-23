@@ -781,7 +781,7 @@ int filet(SDL_Surface * ecran, obj * tab, int posPecheur, int n, int taille_bmp,
 int commencer_construction(obj * tab, int posPecheur, int cible){
 	if ((tab+cible)->type<10 && (tab+posPecheur)->sac>2){
 		*(tab+cible)=getPont();
-		(tab+posPecheur)->sac-=3;
+		(tab+posPecheur)->sac--;
 		return 0;
 	}
 	return -1;
@@ -1008,14 +1008,15 @@ void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
         remplir_grilled(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
 }
 
-void afficher_nombres_texte(int * nb){
+void afficher_nombres_texte(int * nb, int tour){
 	int k;
+	printf("%i|", tour);
 	for (k=0;k<9;k++)
 		printf("%i:%i|", k+1, *(nb+k));
 	printf("\n");
 }
 
-void printNb(obj * tab, int n){//affiche le nombre d'animaux par especes
+void printNb(obj * tab, int n, int tour){//affiche le nombre d'animaux par especes
 	int * nb=calloc(9,sizeof(int));
 	int k;
 	for (k=0;k<n*n;k++){
@@ -1038,13 +1039,13 @@ void printNb(obj * tab, int n){//affiche le nombre d'animaux par especes
 		else if ((tab+k)->type==9)
 			*(nb+8)+=1;
 	}
-	afficher_nombres_texte(nb);
+	afficher_nombres_texte(nb, tour);
 	free(nb);
 }
 
 void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int tour){
 	printMapd(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
-	printNb(tab, n);
+	printNb(tab, n, tour);
 	SDL_Flip(ecran);
 }
 

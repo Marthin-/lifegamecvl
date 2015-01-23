@@ -10,7 +10,6 @@
 
 int main(int argc, char **argv){
 	int n=50;
-	int posPecheur=0;
 	int taille_canne=6;
 	int taille_filet=4;
 	int tourMax;
@@ -24,12 +23,13 @@ int main(int argc, char **argv){
 	}
 	srand(time(NULL));
 	obj * tab=malloc(n*n*sizeof(obj));
-	int nbj=1;//nombre de joueurs
+	int nbj=4;//nombre de joueurs
 /*	while (nbj<1 || nbj>4){
 		printf("combien de joueurs (max. 4) ?\n");
 		scanf("%i",&nbj);
 	}*/
-	remplir(tab, n, nbj);
+	int * posPecheur=malloc(nbj*sizeof(int));
+	remplir(tab, n, nbj, posPecheur);
 	int * death=calloc(9, sizeof(int));
 	int * deathDate=calloc(9, sizeof(int));
 	int deathLength=0;
@@ -56,11 +56,13 @@ int main(int argc, char **argv){
 	for (tour=0;tour<tourMax;tour++){
 		survie(tab, n, tour);
 		checkDeath(tab, n, tour, death, &deathLength, deathDate);
-		printsdl(ecran, tab, &posPecheur, taille_canne, taille_filet, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
+		int i;
+		for (i=0;i<nbj;i++)
+			printsdl(ecran, tab, posPecheur+i, taille_canne, taille_filet, n, taille_bmp, taille_bordure, taille_separation, &tour, tourMax, &isDev);
 //		afficher(tab, n, tour);
 //		getchar();
 		reproduction(tab, n, tour);
-		predation(tab, n, tour, &posPecheur);
+		predation(tab, n, tour, posPecheur);
 		deplacement(tab, n, tour);
 		augTour(tab, n);
 	}
