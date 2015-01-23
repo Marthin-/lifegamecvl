@@ -68,6 +68,8 @@ int filet();
 
 int commencer_construction(obj * tab, int posPecheur, int cible);
 
+void aff_construire(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
+
 int construire(SDL_Surface * ecran, obj * tab, int posPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax);
 
 //----------------------------------------------
