@@ -42,7 +42,7 @@ void aff_poisson_peche(obj * tab, int place);
 
 void commencer_peche(obj * tab, int posPecheur, int cible);
 
-void cibler(int cible);
+void cibler(SDL_Surface * ecran, obj * tab, int cible, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 void aff_menu_peche(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
 
