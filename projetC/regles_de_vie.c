@@ -4,6 +4,7 @@
 #include <time.h>
 #include "regles_de_vie.h"
 #include "constantes.h"//getEau...
+#include "affichage.h"//respawn
 
 void killObj(obj *tab, int place){
 	*(tab+place)=getEau();
@@ -186,10 +187,10 @@ void predation_pollution(obj * tab, int pos, int n, int tour){
 
 }
 
-void predation(obj *tab, int n, int tour){
+void predation(obj *tab, int n, int tour, int * posPecheur){
 	int k;
 	for (k=0;k<n*n;k++){
-		if ((tab+k)->type>1 && (tab+k)->type<10){// && (tab+k)->type!=5){
+		if ((tab+k)->type>1 && (tab+k)->type<10){
 			if ((tab+k)->type==5)
 				predation_pollution(tab, k, n, tour);
 			else {
@@ -202,9 +203,17 @@ void predation(obj *tab, int n, int tour){
 							if ((tab+proie)->taille+(tab+k)->satiete<=(tab+k)->taille_du_bide){
 								(tab+k)->dernier_repas=tour;
 								(tab+k)->satiete+=(tab+proie)->taille;
-								//printf("Type %i en %i mange type %i en %i\n", (tab+k)->type, k, (tab+proie)->type, proie);
-								*(tab+proie)=*(tab+k);
-								*(tab+k)=getEau();
+								if ((tab+proie)->type==12){
+									int sac=(tab+proie)->sac;
+									*(tab+proie)=getEau_pecheur();
+									(tab+proie)->sac=sac;
+								}
+								else {
+									if ((tab+proie)->type==14)
+										respawn(tab, posPecheur, n);
+									*(tab+proie)=*(tab+k);
+									*(tab+k)=getEau();
+								}
 								i=6;
 							}
 						}

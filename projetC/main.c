@@ -35,7 +35,7 @@ int main(int argc, char **argv){
 
 //------------------------------------------------------------------
 	SDL_Init(SDL_INIT_VIDEO);
-//        SDL_WM_SetIcon(SDL_LoadBMP("ico.bmp"), NULL);
+        SDL_WM_SetIcon(SDL_LoadBMP("./img/icone.bmp"), NULL);
 	int taille_bmp=16;
 	int taille_bordure=3;
 	int taille_separation=0;
@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 //		afficher(tab, n, tour);
 //		getchar();
 		reproduction(tab, n, tour);
-		predation(tab, n, tour);
+		predation(tab, n, tour, &posPecheur);
 		deplacement(tab, n, tour);
 		augTour(tab, n);
 	}

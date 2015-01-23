@@ -14,7 +14,7 @@ int returnPlace(int is, int place, int n);
 void reproduction(obj *tab, int n, int tour);
 
 void predation_pollution(obj * tab, int pos, int n, int tour);
-void predation(obj *tab, int n, int tour);
+void predation(obj *tab, int n, int tour, int * posPecheur);
 int getDirection(int pos, int nvpos, int n);
 int continuerDir(obj * tab, int pos, int nvpos, int dir, int n);
 void deplacement_pollution(obj * tab, int pos, int n, int tour);

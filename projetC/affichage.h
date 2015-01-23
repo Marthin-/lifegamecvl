@@ -81,7 +81,7 @@ int moveDown(SDL_Surface * ecran, obj * tab, int * posPecheur, int n, int taille
 
 //-----------------------------------------------
 
-void afficherChoix(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
+void afficherChoix(SDL_Surface * ecran, obj * tab, int taille_bmp, int taille_bordure, int taille_separation, int n, int posPecheur);
 
 void demanderAction(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
 

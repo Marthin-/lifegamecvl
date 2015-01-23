@@ -191,6 +191,7 @@ obj getBaleine(int tour){
 obj getPont(){
 	obj * pt=malloc(sizeof(obj));
 	pt->type=10;
+	pt->taille=3;
 	return *pt;
 }
 
@@ -209,6 +210,7 @@ obj getPont_pecheur(){
 	pt->mange[3]=7;
 	pt->mange[4]=8;
 	pt->mange[5]=9;
+	pt->taille=3;
 	pt->sac=0;//sac vide
 	pt->dirPecheur=16;
 	return *pt;
@@ -237,6 +239,7 @@ obj getEau_pecheur(){
 	pt->mange[3]=7;
 	pt->mange[4]=8;
 	pt->mange[5]=9;
+	pt->taille=3;
 	pt->sac=0;//sac vide
 	pt->dirPecheur=16;
 	return *pt;
