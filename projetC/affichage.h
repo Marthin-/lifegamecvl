@@ -64,7 +64,13 @@ void aff_menu_peche(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int
 
 int pecher(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-int filet();
+void aff_menu_filet(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
+
+void cibler_filet(SDL_Surface * ecran, obj * tab, int cible, int n, int taille_bmp, int taille_bordure, int taille_separation);
+
+void lancer_filet(obj * tab, int posPecheur, int cible, int n);
+
+int filet(SDL_Surface * ecran, obj * tab, int posPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int taille_filet);
 
 int commencer_construction(obj * tab, int posPecheur, int cible);
 
@@ -83,11 +89,11 @@ int moveDown(SDL_Surface * ecran, obj * tab, int * posPecheur, int n, int taille
 
 void afficherChoix(SDL_Surface * ecran, obj * tab, int taille_bmp, int taille_bordure, int taille_separation, int n, int posPecheur);
 
-void demanderAction(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
+void demanderAction(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int taille_filet, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-void choixPecheur(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
+void choixPecheur(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int taille_filet, int * tour, int tourMax, int * isDev, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-void printj(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev);
+void printj(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int taille_filet, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev);
 
 //---------------------------------------------------
 
@@ -102,7 +108,7 @@ void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bo
 
 //-----------------------------------------------------
 
-void printsdl(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev);
+void printsdl(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int taille_filet, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev);
 
 #endif
 
