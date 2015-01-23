@@ -407,7 +407,7 @@ void respawn(obj * tab, int * posPecheur, int n){
 	(tab+*posPecheur)->dirPecheur=16;
 }
 
-void effectuer_lancer(obj * tab, int cible, int posPoisson, int n){
+void effectuer_lancer(obj * tab, int cible, int posPoisson, int n, int * posPecheur){
 	if (((tab+cible)->type==10 && ((tab+posPoisson)->type==3 || (tab+posPoisson)->type==9)) || (tab+cible)->type==0)
 		*(tab+cible)=*(tab+posPoisson);
 	else if ((tab+cible)->type==12 && ((tab+posPoisson)->type==3 || (tab+posPoisson)->type==9)){
@@ -416,22 +416,24 @@ void effectuer_lancer(obj * tab, int cible, int posPoisson, int n){
 		(tab+cible)->sac=sac;
 	}
 	else if ((tab+cible)->type>11 && (tab+cible)->type<15 && (tab+posPoisson)->type>5 && (tab+posPoisson)->type<9)
-		respawn(tab, &cible, n);
+		respawn(tab, posPecheur, n);
 }
 
-int lancer_poisson(SDL_Surface * ecran, obj * tab, int posPecheur, int posPoisson, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation){
-	int cible=getPos(posPecheur, (tab+posPecheur)->dirPecheur, 1, n);
+int lancer_poisson(SDL_Surface * ecran, obj * tab, int * posPecheur, int posPoisson, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	int cible=getPos(*posPecheur, (tab+*posPecheur)->dirPecheur, 1, n);
 	SDL_Event event;
 	int continuer=1;
 	while (continuer){
 		int col_cible=cible%n;
                 int row_cible=(cible-col_cible)/n;
-                int col_pecheur=posPecheur%n;
-                int row_pecheur=(posPecheur-col_pecheur)/n;
+                int col_pecheur=*posPecheur%n;
+                int row_pecheur=(*posPecheur-col_pecheur)/n;
 		erase(ecran, taille_bmp, taille_bordure, taille_separation, n);
-		afficher_donnees(ecran, tab, posPecheur, taille_bmp, taille_bordure, taille_separation, n);
+		afficher_donnees(ecran, tab, *posPecheur, taille_bmp, taille_bordure, taille_separation, n);
 		aff_menu_lancer(ecran, n, taille_bmp, taille_bordure, taille_separation);
+	printf("avant cibler\n");
 		cibler(ecran, tab, cible, n, taille_bmp, taille_bordure, taille_separation);
+	printf("apres cibler\n");
 		SDL_Flip(ecran);
 		SDL_WaitEvent(&event);
 		if (event.type==SDL_QUIT){
@@ -443,26 +445,28 @@ int lancer_poisson(SDL_Surface * ecran, obj * tab, int posPecheur, int posPoisso
 			if (key==SDLK_UP){
 				if (row_cible>row_pecheur-3*taille_canne)
                                         cible=getPos(cible, 2, 1, n);
-                                seeDir(ecran, tab, posPecheur, 2, n, taille_bmp, taille_bordure, taille_separation);
+                                seeDir(ecran, tab, *posPecheur, 2, n, taille_bmp, taille_bordure, taille_separation);
 			}
                         else if (key==SDLK_DOWN){
                                 if (row_cible<row_pecheur+3*taille_canne)
                                         cible=getPos(cible, 64, 1, n);
-                                seeDir(ecran, tab, posPecheur, 64, n, taille_bmp, taille_bordure, taille_separation);
+                                seeDir(ecran, tab, *posPecheur, 64, n, taille_bmp, taille_bordure, taille_separation);
                         }
                         else if (key==SDLK_RIGHT){
                                 if (col_cible<col_pecheur+3*taille_canne)
                                         cible=getPos(cible, 16, 1, n);
-                                seeDir(ecran, tab, posPecheur, 16, n, taille_bmp, taille_bordure, taille_separation);
+                                seeDir(ecran, tab, *posPecheur, 16, n, taille_bmp, taille_bordure, taille_separation);
                         }
                         else if (key==SDLK_LEFT){
                                 if (col_cible>col_pecheur-3*taille_canne)
                                         cible=getPos(cible, 8, 1, n);
-                                seeDir(ecran, tab, posPecheur, 8, n, taille_bmp, taille_bordure, taille_separation);
+                                seeDir(ecran, tab, *posPecheur, 8, n, taille_bmp, taille_bordure, taille_separation);
                         }
 
 			else if (key==SDLK_l){
-				effectuer_lancer(tab, cible, posPoisson, n);
+	printf("Avant effectuer_lancer\n");
+				effectuer_lancer(tab, cible, posPoisson, n, posPecheur);
+	printf("apres\n");
 				continuer=0;
 			}
 			else if (key==SDLK_a){
@@ -484,16 +488,16 @@ void aff_rien(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, in
 	SDL_Flip(ecran);
 }
 
-void commencer_peche(SDL_Surface * ecran, obj * tab, int posPecheur, int cible, int taille_bmp, int taille_bordure, int taille_separation, int n, int * tour, int tourMax, int taille_canne){
+void commencer_peche(SDL_Surface * ecran, obj * tab, int * posPecheur, int cible, int taille_bmp, int taille_bordure, int taille_separation, int n, int * tour, int tourMax, int taille_canne){
 	if ((tab+cible)->type>2 && (tab+cible)->type<10 && (tab+cible)->type!=5){
 		SDL_Event event;
 		int continuer=1;
 		while (continuer){
 			erase(ecran, taille_bmp, taille_bordure, taille_separation, n);
-			afficher_donnees(ecran, tab, posPecheur, taille_bmp, taille_bordure, taille_separation, n);
+			afficher_donnees(ecran, tab, *posPecheur, taille_bmp, taille_bordure, taille_separation, n);
 			aff_poisson_peche(ecran, tab, cible, n, taille_bmp, taille_bordure, taille_separation);
 			int sac=0;
-			if ((tab+posPecheur)->sac<9){
+			if ((tab+*posPecheur)->sac<9){
 				aff_mettre_sac(ecran, n, taille_bmp, taille_bordure, taille_separation);
 				sac=1;
 			}
@@ -507,9 +511,9 @@ void commencer_peche(SDL_Surface * ecran, obj * tab, int posPecheur, int cible, 
 			else if (event.type==SDL_KEYDOWN){
 				int key=event.key.keysym.sym;
 				if (sac && key==SDLK_s){
-					(tab+posPecheur)->sac+=(tab+cible)->taille;
-					if ((tab+posPecheur)->sac>9)
-						(tab+posPecheur)->sac=9;
+					(tab+*posPecheur)->sac+=(tab+cible)->taille;
+					if ((tab+*posPecheur)->sac>9)
+						(tab+*posPecheur)->sac=9;
 					continuer=0;
 				}
 				else if (key==SDLK_l){
@@ -543,17 +547,17 @@ void aff_menu_peche(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int
 	SDL_Flip(ecran);
 }
 
-int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation){
+int pecher(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation){
 	SDL_Event event;
 	int continuer=1;
-	int cible=getPos(posPecheur, (tab+posPecheur)->dirPecheur, 1, n);
+	int cible=getPos(*posPecheur, (tab+*posPecheur)->dirPecheur, 1, n);
 	while (continuer){
 		int col_cible=cible%n;
 		int row_cible=(cible-col_cible)/n;
-		int col_pecheur=posPecheur%n;
-		int row_pecheur=(posPecheur-col_pecheur)/n;
+		int col_pecheur=*posPecheur%n;
+		int row_pecheur=(*posPecheur-col_pecheur)/n;
 		erase(ecran, taille_bmp, taille_bordure, taille_separation, n);
-		afficher_donnees(ecran, tab, posPecheur, taille_bmp, taille_bordure, taille_separation, n);
+		afficher_donnees(ecran, tab, *posPecheur, taille_bmp, taille_bordure, taille_separation, n);
 		aff_menu_peche(ecran, taille_bmp, taille_bordure, taille_separation, n);
 		cibler(ecran, tab, cible, n, taille_bmp, taille_bordure, taille_separation);//affiche la case de peche de destination
                 SDL_WaitEvent(&event);
@@ -570,22 +574,22 @@ int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_canne, int
 			else if (key==SDLK_UP){
 				if (row_cible>row_pecheur-taille_canne)
 					cible=getPos(cible, 2, 1, n);
-				seeDir(ecran, tab, posPecheur, 2, n, taille_bmp, taille_bordure, taille_separation);
+				seeDir(ecran, tab, *posPecheur, 2, n, taille_bmp, taille_bordure, taille_separation);
 			}
 			else if (key==SDLK_DOWN){
 				if (row_cible<row_pecheur+taille_canne)
 					cible=getPos(cible, 64, 1, n);
-				seeDir(ecran, tab, posPecheur, 64, n, taille_bmp, taille_bordure, taille_separation);
+				seeDir(ecran, tab, *posPecheur, 64, n, taille_bmp, taille_bordure, taille_separation);
 			}
 			else if (key==SDLK_RIGHT){
 				if (col_cible<col_pecheur+taille_canne)
 					cible=getPos(cible, 16, 1, n);
-				seeDir(ecran, tab, posPecheur, 16, n, taille_bmp, taille_bordure, taille_separation);
+				seeDir(ecran, tab, *posPecheur, 16, n, taille_bmp, taille_bordure, taille_separation);
 			}
 			else if (key==SDLK_LEFT){
 				if (col_cible>col_pecheur-taille_canne)
 					cible=getPos(cible, 8, 1, n);
-				seeDir(ecran, tab, posPecheur, 8, n, taille_bmp, taille_bordure, taille_separation);
+				seeDir(ecran, tab, *posPecheur, 8, n, taille_bmp, taille_bordure, taille_separation);
 			}
 			else if (key==SDLK_a){//le joueur choisit d'annuler son choix
 				printMapj(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
@@ -702,7 +706,7 @@ void demanderAction(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille
 				printf("dev !\n");
 			}
 			else if (key==SDLK_p){
-				if (pecher(ecran, tab, *posPecheur, taille_canne, tour, tourMax, n, taille_bmp, taille_bordure, taille_separation)!=-1)
+				if (pecher(ecran, tab, posPecheur, taille_canne, tour, tourMax, n, taille_bmp, taille_bordure, taille_separation)!=-1)
 					continuer=0;
 			}
 			else if (key==SDLK_f){//le joueur choisit de lancer le filet

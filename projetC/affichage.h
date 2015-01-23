@@ -48,13 +48,13 @@ void aff_menu_lancer(SDL_Surface * ecran, int n, int taille_bmp, int taille_bord
 
 void respawn(obj * tab, int * posPecheur, int n);
 
-void effectuer_lancer(obj * tab, int cible, int posPoisson, int n);
+void effectuer_lancer(obj * tab, int cible, int posPoisson, int n, int * posPecheur);
 
-int lancer_poisson(SDL_Surface * ecran, obj * tab, int posPecheur, int posPoisson, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
+int lancer_poisson(SDL_Surface * ecran, obj * tab, int * posPecheur, int posPoisson, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 void aff_rien(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-void commencer_peche(SDL_Surface * ecran, obj * tab, int posPecheur, int cible, int taille_bmp, int taille_bordure, int taille_separation, int n, int * tour, int tourMax, int taille_canne);
+void commencer_peche(SDL_Surface * ecran, obj * tab, int * posPecheur, int cible, int taille_bmp, int taille_bordure, int taille_separation, int n, int * tour, int tourMax, int taille_canne);
 
 //---------------------------------------------------
 
@@ -62,7 +62,7 @@ void cibler(SDL_Surface * ecran, obj * tab, int cible, int n, int taille_bmp, in
 
 void aff_menu_peche(SDL_Surface * ecran, int taille_bmp, int taille_bordure, int taille_separation, int n);
 
-int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
+int pecher(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne, int * tour, int tourMax, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
 int filet();
 
