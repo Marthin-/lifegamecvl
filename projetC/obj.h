@@ -16,6 +16,7 @@ typedef struct {
 	int gestation;
 	int frequence_reproduction;
 	int sac;
+	int dirPecheur;
 }obj;
 
 #endif

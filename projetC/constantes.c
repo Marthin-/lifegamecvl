@@ -210,6 +210,7 @@ obj getPont_pecheur(){
 	pt->mange[4]=8;
 	pt->mange[5]=9;
 	pt->sac=0;//sac vide
+	pt->dirPecheur=16;
 	return *pt;
 }
 
@@ -223,6 +224,7 @@ obj getSol_pecheur(){
 	pt->mange[4]=8;
 	pt->mange[5]=9;
 	pt->sac=0;//sac vide
+	pt->dirPecheur=16;
 	return *pt;
 }
 
@@ -236,6 +238,7 @@ obj getEau_pecheur(){
 	pt->mange[4]=8;
 	pt->mange[5]=9;
 	pt->sac=0;//sac vide
+	pt->dirPecheur=16;
 	return *pt;
 }
 
