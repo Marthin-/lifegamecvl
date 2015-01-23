@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>//sleep
 #include "affichage.h"
 
 void clearScreen (){
@@ -342,20 +343,101 @@ void afficher_donnees(SDL_Surface * ecran, obj * tab, int posPecheur, int taille
 	SDL_Flip(ecran);
 }
 
-void aff_poisson_peche(obj * tab, int place){
-	printf("Espece %i pechee !\n", (tab+place)->type);
+void aff_poisson_peche(SDL_Surface * ecran, obj * tab, int place, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	//printf("Espece %i pechee !\n", (tab+place)->type);
+	SDL_Surface * vous=SDL_LoadBMP("./img/menu/vous_avez_peche.bmp");
+	SDL_Rect position;
+	position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
+	position.y=100;
+        SDL_BlitSurface(vous, NULL, ecran, &position);
+	SDL_Surface * img;
+	if ((tab+place)->type==3)
+		img=SDL_LoadBMP("./img/48pixels/bar.bmp");
+	else if ((tab+place)->type==4)
+		img=SDL_LoadBMP("./img/48pixels/thon.bmp");
+	else if ((tab+place)->type==6)
+		img=SDL_LoadBMP("./img/48pixels/pyranha.bmp");
+	else if ((tab+place)->type==7)
+		img=SDL_LoadBMP("./img/48pixels/requin.bmp");
+	else if ((tab+place)->type==8)
+		img=SDL_LoadBMP("./img/48pixels/orque.bmp");
+	else if ((tab+place)->type==9)
+		img=SDL_LoadBMP("./img/48pixels/baleine.bmp");
+	position.x+=20;
+	position.y+=30;
+	SDL_BlitSurface(img, NULL, ecran, &position);
 }
 
-void commencer_peche(obj * tab, int posPecheur, int cible){
+void aff_mettre_sac(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	SDL_Surface * mettre=SDL_LoadBMP("./img/menu/mettre_sac.bmp");
+        SDL_Rect position;
+        position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
+        position.y=180;
+        SDL_BlitSurface(mettre, NULL, ecran, &position);
+}
+
+void aff_lancer(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	SDL_Surface * lancer=SDL_LoadBMP("./img/menu/lancer.bmp");
+        SDL_Rect position;
+        position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
+        position.y=210;
+        SDL_BlitSurface(lancer, NULL, ecran, &position);
+}
+
+void lancer_poisson(){
+	
+}
+
+void aff_rien(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation){
+	erase(ecran, taille_bmp, taille_bordure, taille_separation, n);
+	SDL_Surface * rien=SDL_LoadBMP("./img/menu/rien.bmp");
+        SDL_Rect position;
+        position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
+        position.y=100;
+        SDL_BlitSurface(rien, NULL, ecran, &position);
+	SDL_Flip(ecran);
+}
+
+void commencer_peche(SDL_Surface * ecran, obj * tab, int posPecheur, int cible, int taille_bmp, int taille_bordure, int taille_separation, int n, int * tour, int tourMax){
 	if ((tab+cible)->type>2 && (tab+cible)->type<10 && (tab+cible)->type!=5){
-		aff_poisson_peche(tab, cible);
-		(tab+posPecheur)->sac+=(tab+cible)->taille;
-		if ((tab+posPecheur)->sac>9)
-			(tab+posPecheur)->sac=9;
+		erase(ecran, taille_bmp, taille_bordure, taille_separation, n);
+		afficher_donnees(ecran, tab, posPecheur, taille_bmp, taille_bordure, taille_separation, n);
+		aff_poisson_peche(ecran, tab, cible, n, taille_bmp, taille_bordure, taille_separation);
+		int sac=0;
+		if ((tab+posPecheur)->sac<9){
+			aff_mettre_sac(ecran, n, taille_bmp, taille_bordure, taille_separation);
+			sac=1;
+		}
+		aff_lancer(ecran, n, taille_bmp, taille_bordure, taille_separation);
+		SDL_Flip(ecran);
+		SDL_Event event;
+		int continuer=1;
+		while (continuer){
+			SDL_WaitEvent(&event);
+			if (event.type==SDL_QUIT){
+				continuer=0;
+				*tour=tourMax;
+			}
+			else if (event.type==SDL_KEYDOWN){
+				int key=event.key.keysym.sym;
+				if (sac && key==SDLK_s){
+					(tab+posPecheur)->sac+=(tab+cible)->taille;
+					if ((tab+posPecheur)->sac>9)
+						(tab+posPecheur)->sac=9;
+					continuer=0;
+				}
+				else if (key==SDLK_l){
+					lancer_poisson();
+					continuer=0;
+				}
+			}
+		}
 		*(tab+cible)=getEau();
 	}
-	else
-		printf("Rien peche.\n");
+	else {
+		aff_rien(ecran, n, taille_bmp, taille_bordure, taille_separation);
+		sleep(1);
+	}
 }
 
 void cibler(SDL_Surface * ecran, obj * tab, int cible, int n, int taille_bmp, int taille_bordure, int taille_separation){
@@ -396,7 +478,7 @@ int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_canne, int
                 else if (event.type==SDL_KEYDOWN){
 			int key=event.key.keysym.sym;
 			if (key==SDLK_p){//le joueur choisit de pecher
-				commencer_peche(tab, posPecheur, cible);
+				commencer_peche(ecran, tab, posPecheur, cible, taille_bmp, taille_bordure, taille_separation, n, tour, tourMax);
 				continuer=0;
 			}
 			else if (key==SDLK_UP){
@@ -423,12 +505,6 @@ int pecher(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_canne, int
 				return -1;
 		}
 	}
-/*
-	else if (key==SDLK_l){//le joueur choisit de lancer un poisson
-		if (lancer()!=-1)
-			continuer=0;
-	}
-*/
 	return 0;
 }
 
@@ -484,11 +560,6 @@ int construire(SDL_Surface * ecran, obj * tab, int posPecheur, int n, int taille
 		}
 	}
 	return 0;
-}
-
-int lancer(){
-
-	return -1;
 }
 
 //------------------------------------------------------------

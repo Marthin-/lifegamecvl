@@ -34,13 +34,23 @@ void seeDir(SDL_Surface * ecran, obj * tab, int posPecheur, int dirtosee, int n,
 
 int moveDir(SDL_Surface * ecran, obj * tab, int * posPecheur, int dirtomove, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
-//-------------------------------------------------
-
 void afficher_donnees(SDL_Surface * ecran, obj * tab, int posPecheur, int taille_bmp, int taille_bordure, int taille_separation, int n);
 
-void aff_poisson_peche(obj * tab, int place);
+//---------------------------------------------------
 
-void commencer_peche(obj * tab, int posPecheur, int cible);
+void aff_poisson_peche(SDL_Surface * ecran, obj * tab, int place, int n, int taille_bmp, int taille_bordure, int taille_separation);
+
+void aff_mettre_sac(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation);
+
+void aff_lancer(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation);
+
+void lancer_poisson();
+
+void aff_rien(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation);
+
+void commencer_peche(SDL_Surface * ecran, obj * tab, int posPecheur, int cible, int taille_bmp, int taille_bordure, int taille_separation, int n, int * tour, int tourMax);
+
+//---------------------------------------------------
 
 void cibler(SDL_Surface * ecran, obj * tab, int cible, int n, int taille_bmp, int taille_bordure, int taille_separation);
 
@@ -53,8 +63,6 @@ int filet();
 int commencer_construction(obj * tab, int posPecheur, int cible);
 
 int construire(SDL_Surface * ecran, obj * tab, int posPecheur, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax);
-
-int lancer();
 
 //----------------------------------------------
 
