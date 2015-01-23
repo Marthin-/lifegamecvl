@@ -779,7 +779,7 @@ int filet(SDL_Surface * ecran, obj * tab, int posPecheur, int n, int taille_bmp,
 
 
 int commencer_construction(obj * tab, int posPecheur, int cible){
-	if ((tab+cible)->type<10 && (tab+posPecheur)->sac>2){
+	if ((tab+cible)->type<10 && (tab+posPecheur)->sac>0){
 		*(tab+cible)=getPont();
 		(tab+posPecheur)->sac--;
 		return 0;
@@ -871,7 +871,7 @@ void afficherChoix(SDL_Surface * ecran, obj * tab, int taille_bmp, int taille_bo
 		SDL_Surface * princ_peche=SDL_LoadBMP("./img/menu/princ_peche.bmp");
 		position.y+=30;
 		SDL_BlitSurface(princ_peche, NULL, ecran, &position);
-		if ((tab+posPecheur)->sac>2){
+		if ((tab+posPecheur)->sac>0){
 			SDL_Surface * princ_construire=SDL_LoadBMP("./img/menu/princ_construire.bmp");
 			position.y+=50;
 			SDL_BlitSurface(princ_construire, NULL, ecran, &position);
@@ -898,7 +898,6 @@ void demanderAction(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille
 			if (key==SDLK_w){//passe en mode développeur
 				*isDev=1;
 				continuer=0;
-				printf("dev !\n");
 			}
 			else if (key==SDLK_p && (tab+*posPecheur)->type!=14){
 				if (pecher(ecran, tab, posPecheur, taille_canne, tour, tourMax, n, taille_bmp, taille_bordure, taille_separation)!=-1)
@@ -924,7 +923,7 @@ void demanderAction(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille
 				if (moveLeft(ecran, tab, posPecheur, n, taille_bmp, taille_bordure, taille_separation)!=-1)
 					continuer=0;
 			}
-			else if (key==SDLK_c && (tab+*posPecheur)->type!=14 && (tab+*posPecheur)->sac>2){//le joueur choisit de construire un pont
+			else if (key==SDLK_c && (tab+*posPecheur)->type!=14 && (tab+*posPecheur)->sac>0){//le joueur choisit de construire un pont
 				if (construire(ecran, tab, *posPecheur, n, taille_bmp, taille_bordure, taille_separation, tour, tourMax)!=-1)
 					continuer=0;
 			}
@@ -1043,10 +1042,19 @@ void printNb(obj * tab, int n, int tour){//affiche le nombre d'animaux par espec
 	free(nb);
 }
 
-void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int tour){
+void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev){
 	printMapd(ecran, tab, n, taille_bmp, taille_bordure, taille_separation);
-	printNb(tab, n, tour);
+	printNb(tab, n, *tour);
 	SDL_Flip(ecran);
+	SDL_Event event;
+	SDL_PollEvent(&event);
+	if (event.type==SDL_KEYDOWN){
+		int key=event.key.keysym.sym;
+		if (key==SDLK_w)
+			*isDev=0;
+		else
+			*tour=tourMax;
+	}
 }
 
 //-----------------------------------------------------
@@ -1055,6 +1063,6 @@ void printsdl(SDL_Surface * ecran, obj * tab, int * posPecheur, int taille_canne
 	if (*isDev==0)//joueur
 		printj(ecran, tab, posPecheur, taille_canne, taille_filet, n, taille_bmp, taille_bordure, taille_separation, tour, tourMax, isDev);//afficher l'écran du joueur
 	else
-		printd(ecran, tab, n, taille_bmp, taille_bordure, taille_separation, *tour);//afficher l'écran du développeur
+		printd(ecran, tab, n, taille_bmp, taille_bordure, taille_separation, tour, tourMax, isDev);//afficher l'écran du développeur
 }
 

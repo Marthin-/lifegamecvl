@@ -104,7 +104,7 @@ void printMapd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille
 void afficher_nombres_texte(int * nb, int tour);
 void printNb(obj * tab, int n, int tour);
 
-void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int tour);
+void printd(SDL_Surface * ecran, obj * tab, int n, int taille_bmp, int taille_bordure, int taille_separation, int * tour, int tourMax, int * isDev);
 
 //-----------------------------------------------------
 

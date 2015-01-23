@@ -31,13 +31,13 @@ obj getCorail(int tour){
 	pt->dernier_repas=tour;
 	pt->satiete=3;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=5;
+	pt->duree_survie=3;
 	pt->taille=1;
 	pt->taille_du_bide=5;
 	pt->saut_max=0;
 	pt->metabolisme=1;
 	pt->gestation=3;
-	pt->frequence_reproduction=10;
+	pt->frequence_reproduction=7;
 	return *pt;
 }
 
@@ -51,16 +51,16 @@ obj getBar(int tour){
 	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=5;
+	pt->satiete=3;
 	pt->derniere_reproduction=tour;
 	pt->duree_survie=5;
 	pt->taille=3;
-	pt->taille_du_bide=7;
+	pt->taille_du_bide=6;
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
-	pt->frequence_reproduction=2;
+	pt->frequence_reproduction=5;
 	return *pt;
 }
 
@@ -72,16 +72,16 @@ obj getThon(int tour){
 	for (k=1;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=1;
+	pt->satiete=3;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=3;
+	pt->duree_survie=5;
 	pt->taille=3;
 	pt->taille_du_bide=6;
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
-	pt->frequence_reproduction=10;
+	pt->frequence_reproduction=3;
 	return *pt;
 }
 
@@ -108,15 +108,15 @@ obj getPyranha(int tour){
 	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=5;
+	pt->satiete=3;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=7;
-	pt->taille=2;
+	pt->duree_survie=5;
+	pt->taille=3;
 	pt->taille_du_bide=6;
 	pt->saut_max=1;
 	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
-	pt->gestation=3;
+	pt->gestation=1;
 	pt->frequence_reproduction=3;
 	return *pt;
 }
@@ -175,16 +175,16 @@ obj getBaleine(int tour){
 	for (k=3;k<6;k++)
 		pt->mange[k]=-1;
 	pt->dernier_repas=tour;
-	pt->satiete=6;
+	pt->satiete=5;
 	pt->derniere_reproduction=tour;
-	pt->duree_survie=3;
-	pt->taille=7;
+	pt->duree_survie=2;
+	pt->taille=6;
 	pt->taille_du_bide=6;
 	pt->saut_max=3;
 	pt->dernier_deplacement=tour;
 	pt->metabolisme=1;
 	pt->gestation=3;
-	pt->frequence_reproduction=10;
+	pt->frequence_reproduction=5;
 	return *pt;
 }
 
