@@ -374,29 +374,43 @@ void aff_poisson_peche(SDL_Surface * ecran, obj * tab, int place, int n, int tai
 	position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
 	position.y=100;
         SDL_BlitSurface(vous, NULL, ecran, &position);
-	SDL_Surface * img;
-	if ((tab+place)->type==3)
-		img=SDL_LoadBMP("./img/48pixels/bar.bmp");
-	else if ((tab+place)->type==4)
-		img=SDL_LoadBMP("./img/48pixels/thon.bmp");
-	else if ((tab+place)->type==6)
-		img=SDL_LoadBMP("./img/48pixels/pyranha.bmp");
-	else if ((tab+place)->type==7)
-		img=SDL_LoadBMP("./img/48pixels/requin.bmp");
-	else if ((tab+place)->type==8)
-		img=SDL_LoadBMP("./img/48pixels/orque.bmp");
-	else if ((tab+place)->type==9)
-		img=SDL_LoadBMP("./img/48pixels/baleine.bmp");
-	position.x+=20;
-	position.y+=30;
+	SDL_Surface * img, * img2;
+	if ((tab+place)->type==3){
+		img=SDL_LoadBMP("./img/menu/un_bar.bmp");
+		img2=SDL_LoadBMP("./img/48pixels/bar.bmp");
+	}
+	else if ((tab+place)->type==4){
+		img=SDL_LoadBMP("./img/menu/un_thon.bmp");
+		img2=SDL_LoadBMP("./img/48pixels/thon.bmp");
+	}
+	else if ((tab+place)->type==6){
+		img=SDL_LoadBMP("./img/menu/un_pyranha.bmp");
+		img2=SDL_LoadBMP("./img/48pixels/pyranha.bmp");
+	}
+	else if ((tab+place)->type==7){
+		img=SDL_LoadBMP("./img/menu/un_requin.bmp");
+		img2=SDL_LoadBMP("./img/48pixels/requin.bmp");
+	}
+	else if ((tab+place)->type==8){
+		img=SDL_LoadBMP("./img/menu/un_orque.bmp");
+		img2=SDL_LoadBMP("./img/48pixels/orque.bmp");
+	}
+	else if ((tab+place)->type==9){
+		img=SDL_LoadBMP("./img/menu/une_baleine.bmp");
+		img2=SDL_LoadBMP("./img/48pixels/baleine.bmp");
+	}
+	position.y+=40;
 	SDL_BlitSurface(img, NULL, ecran, &position);
+	position.x+=150;
+	position.y-=10;
+	SDL_BlitSurface(img2, NULL, ecran, &position);
 }
 
 void aff_mettre_sac(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, int taille_separation){
 	SDL_Surface * mettre=SDL_LoadBMP("./img/menu/mettre_sac.bmp");
         SDL_Rect position;
         position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
-        position.y=180;
+        position.y=200;
         SDL_BlitSurface(mettre, NULL, ecran, &position);
 }
 
@@ -404,7 +418,7 @@ void aff_lancer(SDL_Surface * ecran, int n, int taille_bmp, int taille_bordure, 
 	SDL_Surface * lancer=SDL_LoadBMP("./img/menu/lancer.bmp");
         SDL_Rect position;
         position.x=n*taille_bmp+(n-1)*taille_separation+2*taille_bordure+50;
-        position.y=210;
+        position.y=230;
         SDL_BlitSurface(lancer, NULL, ecran, &position);
 }
 
